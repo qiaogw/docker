@@ -13,6 +13,9 @@ RUN apk add --update nginx && \
     ln -sf /dev/stderr /nginx/log/error.log && \
     rm -rf /var/cache/apk/*
 
+RUN mkdir -p /run/nginx && \
+    mkdir -p /var/run/nginx &
+
 
 ADD rootfs/ /
 
