@@ -19,5 +19,5 @@ COPY rootfs/ /
 EXPOSE 80 443
 VOLUME ["/var"]
 
-ENTRYPOINT [ "/entrypoint.sh" ]
+ENTRYPOINT []
 CMD [ "/run.sh" ]
