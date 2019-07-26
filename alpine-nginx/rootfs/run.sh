@@ -1,3 +1,3 @@
 #!/bin/bash
 info "** Starting NGINX **"
-/usr/sbin/nginx -c /var/nginx/conf/nginx.conf
+exec "/usr/local/sbin/nginx" -c "/var/nginx/conf/nginx.conf;"
