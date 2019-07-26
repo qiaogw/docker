@@ -14,7 +14,8 @@ RUN apk add --update nginx && \
     ln -sf /dev/stderr /var/nginx/log/error.log && \
     rm -rf /var/cache/apk/*
 
-COPY rootfs/ /
+
+ADD rootfs/ /
 
 RUN chmod +x /*.sh
 
