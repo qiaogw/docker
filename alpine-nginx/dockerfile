@@ -14,10 +14,11 @@ RUN apk add --update nginx && \
     rm -rf /var/cache/apk/*
 
 RUN mkdir -p /run/nginx && \
-    mkdir -p /var/run/nginx &
+    mkdir -p /var/run/nginx && \
+    mkdir -p /nginx/conf/conf.d
 
 
-ADD rootfs/ /
+COPY rootfs/ /
 
 
 EXPOSE 80 443
