@@ -1,8 +1,7 @@
 FROM qiaogw/alpine-base
 
 
-RUN chmod -R 777 /nginx && \
-    mkdir -p /nginx/www && \
+RUN mkdir -p /nginx/www && \
     mkdir -p /nginx/log && \
     addgroup -g 82 -S nginx && \
     adduser -u 82 -S -D -g "" -G nginx nginx
