@@ -1,0 +1,24 @@
+version: '2'
+
+services:
+
+
+    srs1:
+
+        build: ./debain-srs
+        container_name: srs1
+        ports:
+            - "1985:1985"
+            - "8081:8081"
+            - "1935:1935"
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+            - /data:/data  # volume for data
+        environment:
+            - CONSUL_AGENT=172.18.0.2               # consul agent hostname/IP
+            - CONSUL_PORT=8500                 # consul agent port
+            #- CONSUL_KEYPREFIX=path/prefix/    # consul key prefix path
+            - CONSUL_SERVICENAME=srs          # consul service name
+            - CONSUL_SERVICETAGS=dev            # consul service tag
+            - CONSUL_SERVICEPORT=1985           # consul service port
+            - CONSUL_CHECKTYPE=tcp              # consul health 

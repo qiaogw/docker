@@ -1,0 +1,12 @@
+version: '2'
+
+services:
+    nginx:
+        image: qiaogw/alpine-nginx
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+            - /dockerdata/nginx/conf:/nginx/conf
+            - /dockerdata:/var

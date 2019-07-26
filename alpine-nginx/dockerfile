@@ -1,0 +1,21 @@
+FROM qiaogw/alpine-base
+
+
+RUN chmod -R 777 /var && \
+    mkdir -p /var/www && \
+    mkdir -p /var/nginx/log && \
+    addgroup -g 82 -S nginx && \
+    adduser -u 82 -S -D -g "" -G nginx nginx
+
+
+
+RUN apk add --update nginx && \
+    ln -sf /dev/stdout /var/nginx/log/access.log && \
+    ln -sf /dev/stderr /var/nginx/log/error.log && \
+    rm -rf /var/cache/apk/*
+
+EXPOSE 80 443
+VOLUME ["/var"]
+
+ENTRYPOINT [ "/entrypoint.sh" ]
+CMD [ "/run.sh" ]
