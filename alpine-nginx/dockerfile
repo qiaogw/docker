@@ -16,6 +16,8 @@ RUN apk add --update nginx && \
 
 COPY rootfs/ /
 
+RUN chmod +x /*.sh
+
 EXPOSE 80 443
 VOLUME ["/var"]
 
