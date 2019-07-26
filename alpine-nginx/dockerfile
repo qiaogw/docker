@@ -1,17 +1,17 @@
 FROM qiaogw/alpine-base
 
 
-RUN chmod -R 777 /var && \
-    mkdir -p /var/www && \
-    mkdir -p /var/nginx/log && \
+RUN chmod -R 777 /nginx && \
+    mkdir -p /nginx/www && \
+    mkdir -p /nginx/log && \
     addgroup -g 82 -S nginx && \
     adduser -u 82 -S -D -g "" -G nginx nginx
 
 
 
 RUN apk add --update nginx && \
-    ln -sf /dev/stdout /var/nginx/log/access.log && \
-    ln -sf /dev/stderr /var/nginx/log/error.log && \
+    ln -sf /dev/stdout /nginx/log/access.log && \
+    ln -sf /dev/stderr /nginx/log/error.log && \
     rm -rf /var/cache/apk/*
 
 
@@ -19,7 +19,7 @@ ADD rootfs/ /
 
 
 EXPOSE 80 443
-VOLUME ["/var"]
+VOLUME ["/nginx"]
 
 ENTRYPOINT []
-CMD [ "nginx" ,"-c", "/var/nginx/conf/nginx.conf;" ]
+CMD [ "nginx" ,"-c", "/nginx/conf/nginx.conf;" ]

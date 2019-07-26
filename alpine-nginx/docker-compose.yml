@@ -8,5 +8,5 @@ services:
             - "443:443"
         volumes:
             - /etc/localtime:/etc/localtime:ro
-            - /dockerdata/nginx/conf:/nginx/conf
-            - /dockerdata:/var
+            - /dockerdata/nginx:/nginx
+
