@@ -2,12 +2,14 @@ version: '3'
 
 services:
     nginx:
+        restart: always
         image: qiaogw/alpine-nginx
         ports:
             - "80:80"
             - "443:443"
+            - "8088:8088"
         volumes:
-            - /etc/localtime:/etc/localtime:ro:Z
+            - /etc/localtime:/etc/localtime:ro
             - /dockerdata/nginx:/nginx:Z
         networks:
             - net1
@@ -17,8 +19,10 @@ services:
         container_name: nexus3
         ports:
             - 8081:8081
+            - 8082:8082
+            - 8083:8083
         volumes:
-            - /dockerdata/nexus-data:/nexus-data
+            - /dockerdata/nexus-data:/nexus-data:Z
         networks:
             - net1
 networks:
