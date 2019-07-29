@@ -27,5 +27,5 @@ services:
         - '10022:22'
       volumes:
         - /dockerdata/gitlab/config:/etc/gitlab:Z
-        - /dockerdata/gitlab/data:/var/opt/gitlab
-        - /dockerdata/gitlab/logs:/var/log/gitlab
+        - /dockerdata/gitlab/data:/var/opt/gitlab:Z
+        - /dockerdata/gitlab/logs:/var/log/gitlab:Z
