@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+    nginx:
+        image: qiaogw/alpine-nginx
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - /etc/localtime:/etc/localtime:ro:Z
+            - /dockerdata/nginx:/nginx:Z
+        networks:
+            - net1
+    nexus:
+        restart: always
+        image: sonatype/nexus3
+        container_name: nexus3
+        ports:
+            - 8081:8081
+        volumes:
+            - /dockerdata/nexus-data:/nexus-data
+        networks:
+            - net1
+networks:
+  net1:
+    driver: bridge

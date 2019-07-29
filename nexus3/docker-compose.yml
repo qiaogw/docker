@@ -8,4 +8,4 @@ services:
     ports:
       - 8081:8081
     volumes:
-      - /dockerdata/nexus-data:/nexus-data
+      - /dockerdata/nexus-data:/nexus-data:Z

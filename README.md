@@ -123,3 +123,18 @@ server {
         }
     }
 
+server {
+    listen 80;
+    
+    server_name nexus-web.onstream-cloud.com;
+    index index.html index.htm index.php;
+    
+   
+    location / {
+            root   /nginx/www;
+            index  index.html;
+    }
+}
+
+
+scp root@122.112.233.88:/etc/letsencrypt/live/onstream-cloud.com/cert.pem /etc/docker/certs.d/nexus.onstream-cloud.com/ca.crt
