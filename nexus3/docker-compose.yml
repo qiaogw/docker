@@ -13,7 +13,8 @@ services:
         volumes:
             - /dockerdata/nexus-data:/nexus-data:Z
         networks:
+            - default
             - net1            
 networks:
   net1:
-    driver: bridge
+    external: true
