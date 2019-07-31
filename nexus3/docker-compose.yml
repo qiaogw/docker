@@ -12,3 +12,8 @@ services:
             - 8083:8083
         volumes:
             - /dockerdata/nexus-data:/nexus-data:Z
+        networks:
+            - net1            
+networks:
+  net1:
+    driver: bridge

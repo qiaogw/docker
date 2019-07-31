@@ -11,4 +11,8 @@ services:
         volumes:
             - /etc/localtime:/etc/localtime:ro
             - /dockerdata/nginx:/nginx:Z
-
+        networks:
+            - net1
+networks:
+  net1:
+    driver: bridge
