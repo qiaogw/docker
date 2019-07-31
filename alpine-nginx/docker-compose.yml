@@ -12,9 +12,6 @@ services:
             - /etc/localtime:/etc/localtime:ro
             - /dockerdata/nginx:/nginx:Z
         networks:
-            - default
-            - net1
-        external_links:
             - net1
 networks:
   net1:
