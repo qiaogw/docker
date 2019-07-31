@@ -17,7 +17,7 @@ RUN apk add --update nginx openssl && \
 
 
 
-COPY rootfs/nginx/conf       /nginx/conf 
+ADD  rootfs/nginx/conf       /nginx/conf 
 
 RUN  chmod -R 777 /nginx 
 RUN ls -la /nginx/conf/*
