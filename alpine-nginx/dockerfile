@@ -17,12 +17,13 @@ RUN apk add --update nginx openssl && \
 
 
 
+COPY rootfs/nginx/conf       /nginx/conf 
+
+RUN  chmod -R 777 /nginx 
+RUN ls -la /nginx/conf/*
 
 EXPOSE 80 443
-
-
-COPY rootfs/nginx/conf       /nginx/conf 
-RUN ls -la /nginx/conf/*
+VOLUME ["/nginx"]
 
 ENTRYPOINT []
 CMD [ "nginx" ,"-c", "/nginx/conf/nginx.conf" ]
