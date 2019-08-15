@@ -3,7 +3,6 @@ services:
   gitlab:
     image:  'caeret/gitlab-ce-zh:12.1.0'
     restart: always
-    container_name: gitlab
     hostname: gitlab     
     privileged: true #解决权限    
     environment:

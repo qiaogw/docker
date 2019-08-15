@@ -4,7 +4,6 @@ services:
   postgres:
     image: postgres:alpine   #postgres 镜像
     restart: always
-    container_name: postgres
     hostname: postgres   
     privileged: true #解决权限
     ports:

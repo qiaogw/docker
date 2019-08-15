@@ -4,7 +4,6 @@ services:
   redis:
     image: redis:alpine   #redis 镜像
     restart: always
-    container_name: redis
     hostname: redis   
     privileged: true #解决权限
     ports:

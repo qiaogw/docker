@@ -2,7 +2,6 @@ version: "3"
 services:
   app:
     image: gitlab/gitlab-runner
-    container_name: gitlab-runner
     hostname: gitlab-runner    
     privileged: true #解决权限
     restart: always
