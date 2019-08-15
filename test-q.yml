@@ -23,14 +23,18 @@
     shell: docker network create --driver bridge dev-net
   - name: 启动 redis
     shell:  docker stack deploy -c /root/src/docker/redis/docker-compose.yml redis
+    ignore_errors: true
   - name: 启动 postgres
     shell:  docker stack deploy -c /root/src/docker/postgres/docker-compose.yml postgres
+    ignore_errors: true
   - name: 创建 postgres gitlab 用户
     shell: sudo -u pgadmin psql  --host localhost -c "create user gitlab with password 'gitlab123456';"
   - name: 创建 postgres gitlab db
     shell: sudo -u pgadmin psql  --host localhost -c "create database gitlab owner gitlab;"
   - name: 启动 gitlab
     shell:  docker stack deploy -c /root/src/docker/gitlab/docker-compose.yml gitlab
+    ignore_errors: true
   - name: 启动 gitlab-runner
     shell:  docker stack deploy -c /root/src/docker/gitlab-runner/docker-compose.yml gitlab-runner
+    ignore_errors: true
 
