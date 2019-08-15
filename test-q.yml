@@ -17,7 +17,7 @@
     shell: mkdir -p /dockerdata/gitlab-runner/config
   - name: "传输Docker文件"
     synchronize: src=./  dest=/root/src/docker rsync_opts=--delete
-  - name: 创建 dev-net
+  - name: 删除 dev-net
     shell:  docker network rm dev-net
   - name: 创建 dev-net
     shell: docker network create --driver bridge dev-net
