@@ -1,1 +1,5 @@
-docker run -d -p 2222:22 -v $(pwd)/.ssh/id_rsa.pub:/root/.ssh/authorized_keys -v /dockerdata/data/:/data/ -e SSH_ENABLE_ROOT=true   alpine-sshd
+docker network create --subnet=172.18.0.0/16 netgroup
+
+docker run -d --privileged -ti -p 2221:22 -v $(pwd)/.ssh/id_rsa.pub:/root/.ssh/authorized_keys \
+-v /dockerdata/data/s1/:/data/ --name cluster-master -h cluster-master --net netgroup --ip 172.18.0.2 \
+-e SSH_ENABLE_ROOT=true   alpine-sshd
