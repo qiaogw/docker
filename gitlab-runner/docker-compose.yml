@@ -3,7 +3,6 @@ services:
   app:
     image: gitlab/gitlab-runner
     hostname: gitlab-runner    
-    privileged: true #解决权限
     restart: always
     volumes:
       - /dockerdata/gitlab-runner/config:/etc/gitlab-runner:Z

@@ -4,7 +4,6 @@ services:
     image:  'caeret/gitlab-ce-zh:12.1.0'
     restart: always
     hostname: gitlab     
-    privileged: true #解决权限    
     environment:
       TZ: 'Asia/Shanghai'
       GITLAB_OMNIBUS_CONFIG: |
