@@ -1,0 +1,1 @@
+docker run -d -p 2222:22 -v $(pwd)/.ssh/id_rsa.pub:/root/.ssh/authorized_keys -v /dockerdata/data/:/data/ -e SSH_ENABLE_ROOT=true   alpine-sshd
