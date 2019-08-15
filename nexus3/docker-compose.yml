@@ -15,5 +15,5 @@ services:
         networks:
             - net1            
 networks:
-  net1:
-    driver: bridge
+    net1:
+        driver: bridge

@@ -1,3 +1,0 @@
-sudo -u postgres psql  --host localhost -c "create user ilive with password 'ilive';"
-sudo -u postgres psql  --host localhost -c "create database ilive owner ilive;"
-

@@ -4,7 +4,13 @@ services:
     image: gitlab/gitlab-runner
     container_name: gitlab-runner
     hostname: gitlab-runner    
+    privileged: true #解决权限
     restart: always
     volumes:
       - /dockerdata/gitlab-runner/config:/etc/gitlab-runner:Z
       - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - dev-net
+networks:
+  dev-net:
+    external: true

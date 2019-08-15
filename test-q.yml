@@ -1,0 +1,32 @@
+---
+- hosts: qiao-vt
+  vars:
+  remote_user: root
+  tasks:
+  - name: 创建 postgres volume
+    shell: mkdir -p /dockerdata/postgres
+  - name: 创建 redis volume
+    shell: mkdir -p  /dockerdata/redis
+  - name: 创建 gitlab config volume
+    shell: mkdir -p  /dockerdata/gitlab/config
+  - name: 创建 gitlab data volume
+    shell: mkdir -p /dockerdata/gitlab/data 
+  - name: 创建 gitlab log volume
+    shell: mkdir -p /dockerdata/gitlab/log
+  - name: 创建 gitlab-runner data volume
+    shell: mkdir -p /dockerdata/gitlab-runner/config
+  - name: 创建 dev-net
+    shell: docker network create --driver bridge dev-net
+  - name: 启动 redis
+    shell:  docker stack deploy -c ./redis/docker-compose.yml redis
+  - name: 启动 postgres
+    shell:  docker stack deploy -c ./postgres/docker-compose.yml postgres
+  - name: 创建 postgres gitlab 用户
+    shell: sudo -u pgadmin psql  --host localhost -c "create user gitlab with password 'gitlab123456';"
+  - name: 创建 postgres gitlab db
+    shell: sudo -u pgadmin psql  --host localhost -c "create database gitlab owner gitlab;"
+  - name: 启动 gitlab
+    shell:  docker stack deploy -c ./gitlab/docker-compose.yml gitlab
+  - name: 启动 gitlab-runner
+    shell:  docker stack deploy -c ./gitlab-runner/docker-compose.yml gitlab-runner
+

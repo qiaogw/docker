@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  redis:
+    image: redis:alpine   #redis 镜像
+    restart: always
+    container_name: redis
+    hostname: redis   
+    privileged: true #解决权限
+    ports:
+      - 6379:6379  #映射端口号
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /dockerdata/redis:/data:Z #将数据映射到对应的路径
+      - /dockerdata/redis/conf/redis.conf:/usr/local/etc/redis/redis.conf:Z #将配置文件映射到对应的路径
+    networks:
+      - dev-net
+networks:
+  dev-net:
+    external: true
+
