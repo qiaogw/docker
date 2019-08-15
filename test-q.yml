@@ -15,6 +15,10 @@
     shell: mkdir -p /dockerdata/gitlab/log
   - name: 创建 gitlab-runner data volume
     shell: mkdir -p /dockerdata/gitlab-runner/config
+  - name: "传输Docker文件"
+    copy:
+       src=./
+       dest=/root/src/docker
   - name: 创建 dev-net
     shell: docker network create --driver bridge dev-net
   - name: 启动 redis
