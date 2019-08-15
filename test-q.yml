@@ -28,9 +28,11 @@
     shell:  docker stack deploy -c /root/src/docker/postgres/docker-compose.yml postgres
     ignore_errors: true
   - name: 创建 postgres gitlab 用户
-    shell: sudo -u pgadmin psql  --host localhost -c "create user gitlab with password 'gitlab123456';"
+    shell: psql  --host localhost -c "create user gitlab with password 'gitlab123456';"
+    become_user: pgadmin
   - name: 创建 postgres gitlab db
-    shell: sudo -u pgadmin psql  --host localhost -c "create database gitlab owner gitlab;"
+    shell:  psql  --host localhost -c "create database gitlab owner gitlab;"
+    become_user: pgadmin
   - name: 启动 gitlab
     shell:  docker stack deploy -c /root/src/docker/gitlab/docker-compose.yml gitlab
     ignore_errors: true
