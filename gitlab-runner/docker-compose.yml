@@ -3,7 +3,6 @@ services:
   app:
     image: gitlab/gitlab-runner
     hostname: gitlab-runner    
-    restart: always
     volumes:
       - /dockerdata/gitlab-runner/config:/etc/gitlab-runner:Z
       - /var/run/docker.sock:/var/run/docker.sock

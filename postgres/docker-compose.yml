@@ -3,7 +3,6 @@ version: "3"
 services:
   postgres:
     image: postgres:alpine   #postgres 镜像
-    restart: always
     hostname: postgres   
     ports:
       - 5432:5432  #映射端口号

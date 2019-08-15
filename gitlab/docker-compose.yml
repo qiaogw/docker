@@ -2,7 +2,6 @@ version: '3'
 services:
   gitlab:
     image:  'caeret/gitlab-ce-zh:12.1.0'
-    restart: always
     hostname: gitlab     
     environment:
       TZ: 'Asia/Shanghai'
