@@ -1,0 +1,42 @@
+---
+- hosts: cluster
+  vars:
+  remote_user: root
+  tasks:
+  - name: 安装docker
+    shell: apk add docker
+  - name: 创建 redis volume
+    shell: mkdir -p  /dockerdata/redis
+  - name: 创建 gitlab config volume
+    shell: mkdir -p  /dockerdata/gitlab/config
+  - name: 创建 gitlab data volume
+    shell: mkdir -p /dockerdata/gitlab/data 
+  - name: 创建 gitlab log volume
+    shell: mkdir -p /dockerdata/gitlab/log
+  - name: 创建 gitlab-runner data volume
+    shell: mkdir -p /dockerdata/gitlab-runner/config
+  - name: "传输Docker文件"
+    synchronize: src=./  dest=/root/src/docker rsync_opts=--delete
+  - name: 删除 dev-net
+    shell:  docker network rm dev-net
+  - name: 创建 dev-net
+    shell: docker network create --driver bridge dev-net
+  - name: 启动 redis
+    shell:  docker stack deploy -c /root/src/docker/redis/docker-compose.yml redis
+    ignore_errors: true
+  - name: 启动 postgres
+    shell:  docker stack deploy -c /root/src/docker/postgres/docker-compose.yml postgres
+    ignore_errors: true
+  - name: 创建 postgres gitlab 用户
+    shell: psql  --host localhost -c "create user gitlab with password 'gitlab123456';"
+    become_user: pgadmin
+  - name: 创建 postgres gitlab db
+    shell:  psql  --host localhost -c "create database gitlab owner gitlab;"
+    become_user: pgadmin
+  - name: 启动 gitlab
+    shell:  docker stack deploy -c /root/src/docker/gitlab/docker-compose.yml gitlab
+    ignore_errors: true
+  - name: 启动 gitlab-runner
+    shell:  docker stack deploy -c /root/src/docker/gitlab-runner/docker-compose.yml gitlab-runner
+    ignore_errors: true
+

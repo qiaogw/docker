@@ -1,5 +1,49 @@
 docker network create --subnet=172.18.0.0/16 netgroup
 
-docker run -d --privileged -ti -p 2221:22 -v $(pwd)/.ssh/id_rsa.pub:/root/.ssh/authorized_keys \
--v /dockerdata/data/s1/:/data/ --name cluster-master -h cluster-master --net netgroup --ip 172.18.0.2 \
+cat /root/.ssh/id_rsa.pub > /dockerdata/data/root/id_rsa.pub
+
+docker run -d  -p 2221:22 -v /dockerdata/data/root/id_rsa.pub:/root/.ssh/authorized_keys \
+-v /dockerdata/data/s1/data:/data/ --name cluster-master -h cluster-master --net netgroup --ip 172.18.0.2 \
 -e SSH_ENABLE_ROOT=true   alpine-sshd
+
+docker run -d  -p 2222:22 -v /dockerdata/data/root/id_rsa.pub:/root/.ssh/authorized_keys \
+-v /dockerdata/data/s2/data:/data/  --name cluster-slave1 -h cluster-slave1 --net netgroup --ip 172.18.0.3 \
+-e SSH_ENABLE_ROOT=true   alpine-sshd
+
+docker run -d  -p 2223:22 -v /dockerdata/data/root/id_rsa.pub:/root/.ssh/authorized_keys \
+-v /dockerdata/data/s3/data:/data/  --name cluster-slave2 -h cluster-slave2 --net netgroup --ip 172.18.0.4 \
+-e SSH_ENABLE_ROOT=true   alpine-sshd
+
+docker run -d  -p 2224:22 -v /dockerdata/data/root/id_rsa.pub:/root/.ssh/authorized_keys \
+-v /dockerdata/data/s4/data:/data/  --name cluster-slave3 -h cluster-slave3 --net netgroup --ip 172.18.0.5 \
+-e SSH_ENABLE_ROOT=true   alpine-sshd
+
+docker cp /root/.ssh/id_rsa cluster-master:/root/.ssh   // 拷贝本地文件到docker。
+docker cp /root/.ssh/id_rsa.pub cluster-master:/root/.ssh   // 拷贝本地文件到docker。
+
+ apk --update add python py-pip openssl ca-certificates    && \
+    apk --update add --virtual build-dependencies \
+                python-dev libffi-dev openssl-dev build-base 
+
+
+pip install ansible -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+ apk del build-dependencies            && \
+    rm -rf /var/cache/apk/*  
+
+ mkdir -p /etc/ansible   
+vi /etc/ansible/hosts
+
+[cluster]
+cluster-master  
+cluster-slave1
+cluster-slave2
+cluster-slave3
+
+[master]
+cluster-master
+
+[slaves]
+cluster-slave1
+cluster-slave2
+cluster-slave3
