@@ -23,13 +23,13 @@ services:
         gitlab_rails['redis_host'] = 'redis'
         gitlab_rails['redis_port'] = 6379
         postgresql['enable'] = false
-        gitlab_rails['db_adapter'] = 'postgresql'
+        gitlab_rails['db_adapter'] = 'postgres'
         gitlab_rails['db_encoding'] = 'utf8'
-        gitlab_rails['db_host'] = 'postgresql'
+        gitlab_rails['db_host'] = 'localhost'
         gitlab_rails['db_port'] = 5432
-        gitlab_rails['db_username'] = 'pgadmin'
-        gitlab_rails['db_password'] = 'pgadmin123456'
-        gitlab_rails['db_database'] = 'postgres'
+        gitlab_rails['db_username'] = 'gitlab'
+        gitlab_rails['db_password'] = 'gitlab123456'
+        gitlab_rails['db_database'] = 'gitlab'
     ports:
       - '10080:80'
       - '10443:443'
