@@ -19,9 +19,6 @@ services:
         gitlab_rails['smtp_tls'] = true
         gitlab_rails['gitlab_email_from'] = 'lzqy@onstream-cloud.com'
         user["git_user_email"] = "lzqy@onstream-cloud.com"
-        redis['enable'] = false
-        gitlab_rails['redis_host'] = 'redis'
-        gitlab_rails['redis_port'] = 6379
         postgresql['enable'] = false
         gitlab_rails['db_adapter'] = 'postgresql'
         gitlab_rails['db_encoding'] = 'utf8'
