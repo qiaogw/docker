@@ -4,19 +4,19 @@ cat /root/.ssh/id_rsa.pub > /dockerdata/data/root/id_rsa.pub
 
 docker run -d  -p 2221:22 -v /dockerdata/data/root/id_rsa.pub:/root/.ssh/authorized_keys \
 -v /dockerdata/data/s1/data:/data/ --name cluster-master -h cluster-master --net netgroup --ip 172.18.0.2 \
--e SSH_ENABLE_ROOT=true   alpine-sshd
+-e SSH_ENABLE_ROOT=true   nexus.onstream-cloud.com/alpine-sshd
 
 docker run -d  -p 2222:22 -v /dockerdata/data/root/id_rsa.pub:/root/.ssh/authorized_keys \
 -v /dockerdata/data/s2/data:/data/  --name cluster-slave1 -h cluster-slave1 --net netgroup --ip 172.18.0.3 \
--e SSH_ENABLE_ROOT=true   alpine-sshd
+-e SSH_ENABLE_ROOT=true   nexus.onstream-cloud.com/alpine-sshd
 
 docker run -d  -p 2223:22 -v /dockerdata/data/root/id_rsa.pub:/root/.ssh/authorized_keys \
 -v /dockerdata/data/s3/data:/data/  --name cluster-slave2 -h cluster-slave2 --net netgroup --ip 172.18.0.4 \
--e SSH_ENABLE_ROOT=true   alpine-sshd
+-e SSH_ENABLE_ROOT=true   nexus.onstream-cloud.com/alpine-sshd
 
 docker run -d  -p 2224:22 -v /dockerdata/data/root/id_rsa.pub:/root/.ssh/authorized_keys \
 -v /dockerdata/data/s4/data:/data/  --name cluster-slave3 -h cluster-slave3 --net netgroup --ip 172.18.0.5 \
--e SSH_ENABLE_ROOT=true   alpine-sshd
+-e SSH_ENABLE_ROOT=true   nexus.onstream-cloud.com/alpine-sshd
 
 docker cp /root/.ssh/id_rsa cluster-master:/root/.ssh   // 拷贝本地文件到docker。
 docker cp /root/.ssh/id_rsa.pub cluster-master:/root/.ssh   // 拷贝本地文件到docker。
