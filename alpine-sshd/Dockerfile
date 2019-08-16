@@ -6,7 +6,6 @@ RUN apk update && \
     apk --update add python py-pip openssl ca-certificates    && \
     apk --update add --virtual build-dependencies \
     python-dev libffi-dev openssl-dev build-base  && \
-    pip install ansible -i https://pypi.tuna.tsinghua.edu.cn/simple && \
     deluser $(getent passwd 33 | cut -d: -f1) && \
     delgroup $(getent group 33 | cut -d: -f1) 2>/dev/null || true && \
     mkdir -p ~root/.ssh /etc/authorized_keys && chmod 700 ~root/.ssh/ && \
