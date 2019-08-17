@@ -19,6 +19,9 @@ EXPOSE 22
 
 COPY entry.sh /entry.sh
 
+VOLUME [ "/sys/fs/cgroup" ]
+
 ENTRYPOINT ["/entry.sh"]
+
 
 CMD ["/usr/sbin/sshd", "-D", "-e", "-f", "/etc/ssh/sshd_config"]
