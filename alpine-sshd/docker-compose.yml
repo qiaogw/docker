@@ -8,8 +8,8 @@ services:
     ports:
       - "2221:22"
     volumes:
-      - /dockerdata/data/root/id_rsa.pub:/root/.ssh/authorized_keys 
-      - dockerdata/data/s1/data:/data/:Z
+      - /root/.ssh/id_rsa.pub:/root/.ssh/authorized_keys 
+      - /dockerdata/data/s1/data:/data/:Z
     command: pip install ansible -i https://pypi.tuna.tsinghua.edu.cn/simple
     networks:
       netgroup:
@@ -22,8 +22,8 @@ services:
     ports:
       - "2222:22"
     volumes:
-      - /dockerdata/data/root/id_rsa.pub:/root/.ssh/authorized_keys:ro 
-      - dockerdata/data/s2/data:/data/:Z
+      - /root/.ssh/id_rsa.pub:/root/.ssh/authorized_keys:ro 
+      - /dockerdata/data/s2/data:/data/:Z
     networks:
       netgroup:
         ipv4_address: 172.18.0.3
@@ -35,8 +35,8 @@ services:
     ports:
       - "2223:22"
     volumes:
-      - /dockerdata/data/root/id_rsa.pub:/root/.ssh/authorized_keys:ro 
-      - dockerdata/data/s3/data:/data/:Z
+      - /root/.ssh/id_rsa.pub:/root/.ssh/authorized_keys:ro 
+      - /dockerdata/data/s3/data:/data/:Z
     networks:
       netgroup:
         ipv4_address: 172.18.0.4
@@ -48,8 +48,8 @@ services:
     ports:
       - "2224:22"
     volumes:
-      - /dockerdata/data/root/id_rsa.pub:/root/.ssh/authorized_keys:ro 
-      - dockerdata/data/s4/data:/data/:Z
+      - /root/.ssh/id_rsa.pub:/root/.ssh/authorized_keys:ro 
+      - /dockerdata/data/s4/data:/data/:Z
     networks:
       netgroup:
         ipv4_address: 172.18.0.5
