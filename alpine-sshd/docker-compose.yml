@@ -10,7 +10,6 @@ services:
     volumes:
       - /root/.ssh/id_rsa.pub:/root/.ssh/authorized_keys:ro 
       - /dockerdata/data/s1/data:/data/:Z
-    command: pip install ansible -i https://pypi.tuna.tsinghua.edu.cn/simple
     environment:
       - SSH_ENABLE_ROOT=true
     networks:
