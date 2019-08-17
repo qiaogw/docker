@@ -10,7 +10,7 @@ services:
     volumes:
       - /dockerdata/data/root/id_rsa.pub:/root/.ssh/authorized_keys 
       - dockerdata/data/s1/data:/data/:Z
-    commond: pip install ansible -i https://pypi.tuna.tsinghua.edu.cn/simple
+    command: pip install ansible -i https://pypi.tuna.tsinghua.edu.cn/simple
     networks:
       netgroup:
         ipv4_address: 172.18.0.2
