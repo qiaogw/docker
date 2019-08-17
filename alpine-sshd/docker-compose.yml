@@ -11,6 +11,8 @@ services:
       - /root/.ssh/id_rsa.pub:/root/.ssh/authorized_keys:ro 
       - /dockerdata/data/s1/data:/data/:Z
     command: pip install ansible -i https://pypi.tuna.tsinghua.edu.cn/simple
+    environment:
+      SSH_ENABLE_ROOT: true
     networks:
       netgroup:
         ipv4_address: 172.18.0.2
@@ -24,6 +26,8 @@ services:
     volumes:
       - /root/.ssh/id_rsa.pub:/root/.ssh/authorized_keys:ro
       - /dockerdata/data/s2/data:/data/:Z
+    environment:
+      SSH_ENABLE_ROOT: true
     networks:
       netgroup:
         ipv4_address: 172.18.0.3
@@ -37,6 +41,8 @@ services:
     volumes:
       - /root/.ssh/id_rsa.pub:/root/.ssh/authorized_keys:ro 
       - /dockerdata/data/s3/data:/data/:Z
+    environment:
+      SSH_ENABLE_ROOT: true
     networks:
       netgroup:
         ipv4_address: 172.18.0.4
@@ -50,6 +56,8 @@ services:
     volumes:
       - /root/.ssh/id_rsa.pub:/root/.ssh/authorized_keys:ro
       - /dockerdata/data/s4/data:/data/:Z
+    environment:
+      SSH_ENABLE_ROOT: true
     networks:
       netgroup:
         ipv4_address: 172.18.0.5

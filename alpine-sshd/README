@@ -2,7 +2,7 @@ docker network create --subnet=172.18.0.0/16 netgroup
 
 cat /root/.ssh/id_rsa.pub > /dockerdata/data/root/id_rsa.pub
 
-docker run -d  -p 2221:22 -v /dockerdata/data/root/id_rsa.pub:/root/.ssh/authorized_keys \
+docker run -d  -p 2221:22 -v /root/.ssh/id_rsa.pub:/root/.ssh/authorized_keys \
 -v /dockerdata/data/s1/data:/data/ --name cluster-master -h cluster-master --net netgroup --ip 172.18.0.2 \
 -e SSH_ENABLE_ROOT=true   nexus.onstream-cloud.com/alpine-sshd
 
