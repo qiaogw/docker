@@ -1,0 +1,61 @@
+version: '3'
+
+services:
+  cluster-master:
+    image: nexus.onstream-cloud.com/alpine-sshd
+    container_name: cluster-master
+    hostname: cluster-master
+    ports:
+      - "2221:22"
+    volumes:
+      - /dockerdata/data/root/id_rsa.pub:/root/.ssh/authorized_keys 
+      - dockerdata/data/s1/data:/data/:Z
+    commond: "pip install ansible -i https://pypi.tuna.tsinghua.edu.cn/simple"
+    networks:
+      netgroup:
+        ipv4_address: 172.18.0.2
+
+  cluster-slave1 :
+    image: nexus.onstream-cloud.com/alpine-sshd
+    container_name: cluster-slave1 
+    hostname: cluster-slave1 
+    ports:
+      - "2222:22"
+    volumes:
+      - /dockerdata/data/root/id_rsa.pub:/root/.ssh/authorized_keys:ro 
+      - dockerdata/data/s2/data:/data/:Z
+    networks:
+      netgroup:
+        ipv4_address: 172.18.0.3
+
+  cluster-slave2 :
+    image: nexus.onstream-cloud.com/alpine-sshd
+    container_name: cluster-slave2 
+    hostname: cluster-slave2 
+    ports:
+      - "2223:22"
+    volumes:
+      - /dockerdata/data/root/id_rsa.pub:/root/.ssh/authorized_keys:ro 
+      - dockerdata/data/s3/data:/data/:Z
+    networks:
+      netgroup:
+        ipv4_address: 172.18.0.4
+
+  cluster-slave3 :
+    image: nexus.onstream-cloud.com/alpine-sshd
+    container_name: cluster-slave3 
+    hostname: cluster-slave3 
+    ports:
+      - "2224:22"
+    volumes:
+      - /dockerdata/data/root/id_rsa.pub:/root/.ssh/authorized_keys:ro 
+      - dockerdata/data/s4/data:/data/:Z
+    networks:
+      netgroup:
+        ipv4_address: 172.18.0.5
+          
+networks:
+  netgroup:
+    ipam:
+      config:
+      - subnet: 172.18.0.0/16
