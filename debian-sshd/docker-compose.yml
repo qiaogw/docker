@@ -5,6 +5,7 @@ services:
     image: nexus.onstream-cloud.com/debian-sshd
     container_name: cluster-master
     hostname: cluster-master
+    privileged: true
     ports:
       - "2221:22"
     volumes:
@@ -20,6 +21,7 @@ services:
     image: nexus.onstream-cloud.com/debian-sshd
     container_name: cluster-slave1 
     hostname: cluster-slave1 
+    privileged: true
     ports:
       - "2222:22"
     volumes:
@@ -33,6 +35,7 @@ services:
     image: nexus.onstream-cloud.com/debian-sshd
     container_name: cluster-slave2 
     hostname: cluster-slave2 
+    privileged: true
     ports:
       - "2223:22"
     volumes:
@@ -46,6 +49,7 @@ services:
     image: nexus.onstream-cloud.com/debian-sshd
     container_name: cluster-slave3 
     hostname: cluster-slave3 
+    privileged: true
     ports:
       - "2224:22"
     volumes:

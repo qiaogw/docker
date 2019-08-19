@@ -13,7 +13,7 @@ RUN sed -ri 's/^#PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
     sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config  && \
     sed -i "s/^.*StrictHostKeyChecking.*$/   StrictHostKeyChecking no/g" /etc/ssh/ssh_config
 RUN mkdir -p /var/run/sshd  \
-    && mkdir /root/.ssh 
+    && mkdir /root/.ssh && git config --global credential.helper store
 
 
 EXPOSE 22
