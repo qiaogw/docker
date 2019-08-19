@@ -16,6 +16,6 @@ RUN mkdir -p /var/run/sshd  \
     && mkdir /root/.ssh && git config --global credential.helper store
 
 
-EXPOSE 22
+EXPOSE 22 80 443 8081 8082 8083 8084 8085 8086 8087 8088 8089 5432 6379 9000 10080
 
 CMD    ["/usr/sbin/sshd", "-D"]
