@@ -1,6 +1,6 @@
 FROM debian:latest
 
-COPY ./sources.list /etc/apt/sources.list
+COPY sources.list /etc/apt/sources.list
 
 RUN apt-get update && \
     cat /etc/apt/sources.list 
