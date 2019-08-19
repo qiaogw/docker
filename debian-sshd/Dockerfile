@@ -3,8 +3,9 @@ FROM debian:latest
 COPY sources.list /etc/apt/sources.list
 
 RUN apt-get update && \
-    cat /etc/apt/sources.list && \
-    apt-get install -y openssh-server python-pip git && \
+    cat /etc/apt/sources.list 
+
+RUN apt-get install -y openssh-server python-pip git && \
     rm -rf /var/lib/apt/lists/* && \
     apt-get clean
 
