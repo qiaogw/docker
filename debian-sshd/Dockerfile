@@ -2,7 +2,7 @@ FROM debian:10
 
 COPY sources.list /etc/apt/sources.list
 
-RUN apt-get clean && apt-get update && \
+RUN apt-get update && \
     cat /etc/apt/sources.list 
 
 RUN apt-get install -y openssh-server python-pip git vim && \
