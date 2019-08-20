@@ -1,0 +1,18 @@
+version: '3'
+services:
+  sonarqube:
+    image: sonarqube
+    ports:
+      - "9000:9000"
+    environment:
+      - SONARQUBE_JDBC_URL=jdbc:postgresql://db:5432/sonar
+    volumes:
+      - /dockerdata/sonar/conf:/opt/sonarqube/conf
+      - /dockerdata/sonar/data:/opt/sonarqube/data
+      - /dockerdata/sonar/extensions:/opt/sonarqube/extensions
+      - /dockerdata/sonar/bundled-plugins:/opt/sonarqube/lib/bundled-plugins
+    networks:
+      - dev-net
+networks:
+  dev-net:
+    external: true
