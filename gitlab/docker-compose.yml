@@ -12,7 +12,7 @@ services:
         gitlab_rails['smtp_address'] = "smtp.exmail.qq.com"
         gitlab_rails['smtp_port'] = 465
         gitlab_rails['smtp_user_name'] = "lzqy@onstream-cloud.com"
-        gitlab_rails['smtp_password'] = "rahfnyzpngeaeaid"
+        gitlab_rails['smtp_password'] = "grnprubmexteecde"
         gitlab_rails['smtp_domain'] = "exmail.qq.com"
         gitlab_rails['smtp_authentication'] = "login"
         gitlab_rails['smtp_enable_starttls_auto'] = true
