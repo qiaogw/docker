@@ -13,11 +13,10 @@ services:
         gitlab_rails['smtp_port'] = 465
         gitlab_rails['smtp_user_name'] = "lzqy@onstream-cloud.com"
         gitlab_rails['smtp_password'] = "rahfnyzpngeaeaid"
-        gitlab_rails['smtp_domain'] = "smtp.qq.com"
+        gitlab_rails['smtp_domain'] = "exmail.qq.com"
         gitlab_rails['smtp_authentication'] = "login"
         gitlab_rails['smtp_enable_starttls_auto'] = true
         gitlab_rails['smtp_tls'] = true
-        gitlab_rails['smtp_openssl_verify_mode'] = 'peer'
         gitlab_rails['gitlab_email_from'] = 'lzqy@onstream-cloud.com'
         redis['enable'] = false
         gitlab_rails['redis_host'] = 'redis'
