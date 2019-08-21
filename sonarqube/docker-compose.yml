@@ -21,7 +21,7 @@ services:
       - "5431:5432"
     volumes:
       - /etc/localtime:/etc/localtime:ro #主机时区
-      - /dockerdata/sonar/postgres:/var/lib/postgresql #将数据映射到对应的路径
+      - /dockerdata/sonar/postgres:/var/lib/postgresql/data #将数据映射到对应的路径
     environment:
       - POSTGRES_USER=sonar 
       - POSTGRES_PASSWORD=sonar  #密码
