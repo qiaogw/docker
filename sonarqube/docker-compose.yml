@@ -8,11 +8,11 @@ services:
       - SONARQUBE_JDBC_URL=jdbc:postgresql://db:5432/sonar
     volumes:
       - /etc/localtime:/etc/localtime:ro #主机时区
-      - /dockerdata/sonar/conf:/opt/sonarqube/conf:Z #:Z 解决与 SELinux 相关的权限问题
-      - /dockerdata/sonar/data:/opt/sonarqube/data:Z #:Z 解决与 SELinux 相关的权限问题
-      - /dockerdata/sonar/extensions:/opt/sonarqube/extensions:Z #:Z 解决与 SELinux 相关的权限问题
-      - /dockerdata/sonar/logs:/opt/sonarqube/logs:Z #:Z 解决与 SELinux 相关的权限问题
-      - /dockerdata/sonar/bundled-plugins:/opt/sonarqube/lib/bundled-plugins:Z #:Z 解决与 SELinux 相关的权限问题
+      - /dockerdata/sonar/conf:/opt/sonarqube/conf:z  #:z  解决与 SELinux 相关的权限问题
+      - /dockerdata/sonar/data:/opt/sonarqube/data:z  #:z  解决与 SELinux 相关的权限问题
+      - /dockerdata/sonar/extensions:/opt/sonarqube/extensions:z  #:z  解决与 SELinux 相关的权限问题
+      - /dockerdata/sonar/logs:/opt/sonarqube/logs:z  #:z  解决与 SELinux 相关的权限问题
+      - /dockerdata/sonar/bundled-plugins:/opt/sonarqube/lib/bundled-plugins:z  #:z 解决与 SELinux 相关的权限问题
     networks:
       - sonar-net
   db:
