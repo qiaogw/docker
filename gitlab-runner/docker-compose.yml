@@ -4,8 +4,9 @@ services:
     image: gitlab/gitlab-runner
     hostname: gitlab-runner    
     volumes:
-      - /dockerdata/gitlab-runner/config:/etc/gitlab-runner:Z
+      - /dockerdata/gitlab-runner/config:/etc/gitlab-runner
       - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro #主机时区
     networks:
       - dev-net
 networks:

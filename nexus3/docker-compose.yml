@@ -4,16 +4,15 @@ services:
     nexus:
         restart: always
         image: sonatype/nexus3
-        container_name: nexus
-        hostname: nexus
         ports:
             - 8081:8081
             - 8082:8082
             - 8083:8083
         volumes:
-            - /dockerdata/nexus-data:/nexus-data:Z
+            - /dockerdata/nexus-data:/nexus-data
+            - /etc/localtime:/etc/localtime:ro #主机时区
         networks:
-            - net1            
+            - nexus-net            
 networks:
-    net1:
+    nexus-net:
         driver: bridge

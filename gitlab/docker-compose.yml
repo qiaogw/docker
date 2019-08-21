@@ -2,7 +2,6 @@ version: '3'
 services:
   gitlab:
     image:  'caeret/gitlab-ce-zh:12.1.0'
-    hostname: gitlab     
     environment:
       TZ: 'Asia/Shanghai'
       GITLAB_OMNIBUS_CONFIG: |
@@ -20,27 +19,25 @@ services:
         gitlab_rails['smtp_tls'] = true
         gitlab_rails['gitlab_email_from'] = "lzqy@onstream-cloud.com"
         gitlab_rails['gitlab_email_reply_to'] = "lzqy@onstream-cloud.com"
-        redis['enable'] = false
-        gitlab_rails['redis_host'] = 'redis'
-        gitlab_rails['redis_port'] = 6379
-        postgresql['enable'] = false
-        gitlab_rails['db_adapter'] = 'postgresql'
-        gitlab_rails['db_encoding'] = 'utf8'
-        gitlab_rails['db_host'] = 'postgres'
-        gitlab_rails['db_port'] = 5432
-        gitlab_rails['db_username'] = 'gitlab'
-        gitlab_rails['db_password'] = 'gitlab123456'
-        gitlab_rails['db_database'] = 'gitlab'
     ports:
       - '10080:80'
       - '10443:443'
       - '10022:22'
     volumes:
-      - /dockerdata/gitlab/config:/etc/gitlab:Z
-      - /dockerdata/gitlab/data:/var/opt/gitlab:Z
-      - /dockerdata/gitlab/logs:/var/log/gitlab:Z
+      - /etc/localtime:/etc/localtime:ro #主机时区
+      - /dockerdata/gitlab/config:/etc/gitlab
+      - /dockerdata/gitlab/data:/var/opt/gitlab
+      - /dockerdata/gitlab/logs:/var/log/gitlab
     networks:
-      - dev-net
+      - gitlab-net
+  gitlab-ci:
+    image: gitlab/gitlab-runner
+    volumes:
+      - /dockerdata/gitlab-runner/config:/etc/gitlab-runner
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro #主机时区
+    networks:
+      - gitlab-net
 networks:
-  dev-net:
-    external: true
+  gitlab-net:
+    driver: bridge
