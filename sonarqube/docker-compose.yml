@@ -17,6 +17,8 @@ services:
       - sonar-net
   db:
     image: postgres:alpine   #postgres 镜像
+    ports:
+      - "5431:5432"
     volumes:
       - /etc/localtime:/etc/localtime:ro #主机时区
       - /dockerdata/sonar/postgres:/var/lib/postgresql #将数据映射到对应的路径
