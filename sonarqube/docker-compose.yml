@@ -10,6 +10,7 @@ services:
       - /dockerdata/sonar/conf:/opt/sonarqube/conf
       - /dockerdata/sonar/data:/opt/sonarqube/data
       - /dockerdata/sonar/extensions:/opt/sonarqube/extensions
+      - /dockerdata/sonar/logs:/opt/sonarqube/logs
       - /dockerdata/sonar/bundled-plugins:/opt/sonarqube/lib/bundled-plugins
     networks:
       - dev-net
