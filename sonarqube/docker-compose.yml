@@ -3,7 +3,7 @@ services:
   sonarqube:
     image: nexus.onstream-cloud.com/sonarqube
     ports:
-      - "9000:9000"
+      - "9001:9000"
     environment:
       - SONARQUBE_JDBC_URL=jdbc:postgresql://postgres:5432/sonar
     volumes:
