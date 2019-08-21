@@ -23,7 +23,7 @@ services:
       - /etc/localtime:/etc/localtime:ro #主机时区
       - /dockerdata/sonar/postgres:/var/lib/postgresql #将数据映射到对应的路径
     environment:
-      - POSTGRES_USER:=sonar
+      - POSTGRES_USER=sonar 
       - POSTGRES_PASSWORD=sonar  #密码
     networks:
       - sonar-net
