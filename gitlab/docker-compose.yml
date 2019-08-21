@@ -25,15 +25,15 @@ services:
       - '10022:22'
     volumes:
       - /etc/localtime:/etc/localtime:ro #主机时区
-      - /dockerdata/gitlab/config:/etc/gitlab
-      - /dockerdata/gitlab/data:/var/opt/gitlab
-      - /dockerdata/gitlab/logs:/var/log/gitlab
+      - /dockerdata/gitlab/config:/etc/gitlab:Z #:Z 解决与 SELinux 相关的权限问题
+      - /dockerdata/gitlab/data:/var/opt/gitlab:Z #:Z 解决与 SELinux 相关的权限问题
+      - /dockerdata/gitlab/logs:/var/log/gitlab:Z #:Z 解决与 SELinux 相关的权限问题
     networks:
       - gitlab-net
   gitlab-ci:
     image: gitlab/gitlab-runner
     volumes:
-      - /dockerdata/gitlab-runner/config:/etc/gitlab-runner
+      - /dockerdata/gitlab-runner/config:/etc/gitlab-runner:Z #:Z 解决与 SELinux 相关的权限问题
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/localtime:/etc/localtime:ro #主机时区
     networks:

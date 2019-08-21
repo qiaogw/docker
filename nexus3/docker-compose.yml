@@ -9,7 +9,7 @@ services:
             - 8082:8082
             - 8083:8083
         volumes:
-            - /dockerdata/nexus-data:/nexus-data
+            - /dockerdata/nexus-data:/nexus-data:Z #:Z 解决与 SELinux 相关的权限问题
             - /etc/localtime:/etc/localtime:ro #主机时区
         networks:
             - nexus-net            
