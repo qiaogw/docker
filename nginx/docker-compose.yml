@@ -1,0 +1,19 @@
+version: "3"
+services:
+  web: # 服务的名称
+    image: nginx:1.17.3-alpine
+    volumes: # 文件夹映射
+      - /dockerdata/nginx/html:/usr/share/nginx/html:z # 宿主:docker:共享 ,www目录
+      - /dockerdata/nginx/conf:/etc/nginx:z # nginx配置文件
+    ports: # 端口转发 宿主:docker
+      - "80:80"
+      - "443:443"
+      - "8088:8088"
+    networks: 
+      - web-net ## 定义网络
+      #web: ## 加入的网络的名称
+      #  ipv4_address: 192.168.5.101 ## ipv4的ip地址
+       
+networks:
+  web-net:
+    driver: host

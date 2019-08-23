@@ -1,0 +1,105 @@
+version: '3'
+services:
+  gitlab:
+    image:  'caeret/gitlab-ce-zh:12.1.0'
+    environment:
+      TZ: 'Asia/Shanghai'
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://gitlab.onstream-cloud.com'
+        gitlab_rails['gitlab_shell_ssh_port'] = 10022
+        gitlab_rails['time_zone'] = 'Asia/Shanghai'
+        gitlab_rails['smtp_enable'] = true
+        gitlab_rails['smtp_address'] = "smtp.qq.com"
+        gitlab_rails['smtp_port'] = 465
+        gitlab_rails['smtp_user_name'] = "lzqy@onstream-cloud.com"
+        gitlab_rails['smtp_password'] = "grnprubmexteecde"
+        gitlab_rails['smtp_domain'] = "qq.com"
+        gitlab_rails['smtp_authentication'] = "login"
+        gitlab_rails['smtp_enable_starttls_auto'] = true
+        gitlab_rails['smtp_tls'] = true
+        gitlab_rails['gitlab_email_from'] = "lzqy@onstream-cloud.com"
+        gitlab_rails['gitlab_email_reply_to'] = "lzqy@onstream-cloud.com"
+        redis['enable'] = false
+        gitlab_rails['redis_host'] = 'redis'
+        gitlab_rails['redis_port'] = 6379
+        postgresql['enable'] = false
+        gitlab_rails['db_adapter'] = 'postgresql'
+        gitlab_rails['db_encoding'] = 'utf8'
+        gitlab_rails['db_host'] = 'db'
+        gitlab_rails['db_port'] = 5432
+        gitlab_rails['db_username'] = 'sonar'
+        gitlab_rails['db_password'] = 'sonar'
+        gitlab_rails['db_database'] = 'postgres'
+    ports:
+      - '10080:80'
+      - '10443:443'
+      - '10022:22'
+    volumes:
+      - /etc/localtime:/etc/localtime:ro #主机时区
+      - /dockerdata/gitlab/config:/etc/gitlab:Z #:Z 解决与 SELinux 相关的权限问题
+      - /dockerdata/gitlab/data:/var/opt/gitlab:Z #:Z 解决与 SELinux 相关的权限问题
+      - /dockerdata/gitlab/logs:/var/log/gitlab:Z #:Z 解决与 SELinux 相关的权限问题
+    networks:
+      - devops-net
+  gitlab-ci:
+    image: gitlab/gitlab-runner
+    volumes:
+      - /dockerdata/gitlab-runner/config:/etc/gitlab-runner:Z #:Z 解决与 SELinux 相关的权限问题
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro #主机时区
+    networks:
+      - devops-net
+  nexus:
+    image: sonatype/nexus3
+    ports:
+      - 8081:8081
+      - 8082:8082
+      - 8083:8083
+    volumes:
+      - /dockerdata/nexus-data:/nexus-data:Z #:Z 解决与 SELinux 相关的权限问题
+      - /etc/localtime:/etc/localtime:ro #主机时区
+    networks:
+      - devops-net   
+  jira:
+    image: nexus.onstream-cloud.com/jirasoft:1.0
+    ports:
+      - 5004:8080
+    volumes:
+      - /etc/localtime:/etc/localtime:ro #主机时区
+    networks:
+      - devops-net    
+  confluence:
+    image: nexus.onstream-cloud.com/confluence:1.0
+    ports:
+      - 5002:8090
+      - 5003:8091
+    volumes:
+      - /etc/localtime:/etc/localtime:ro #主机时区
+    networks:
+      - devops-net      
+  db:
+    image: postgres:alpine   #postgres 镜像
+    ports:
+      - 5432:5432  #映射端口号
+    volumes:
+      - /etc/localtime:/etc/localtime:ro #主机时区
+      - /dockerdata/sonar/postgres:/var/lib/postgresql/data #将数据映射到对应的路径
+    environment:
+      - POSTGRES_USER=sonar 
+      - POSTGRES_PASSWORD=sonar  #密码
+    networks:
+      - devops-net
+  redis:
+    image: redis:alpine   #redis 镜像
+    hostname: redis   
+    ports:
+      - 6379:6379  #映射端口号
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /dockerdata/redis:/data:Z #将数据映射到对应的路径
+      - /dockerdata/redis/conf/redis.conf:/usr/local/etc/redis/redis.conf:Z #将配置文件映射到对应的路径
+    networks:
+      - devops-net 
+networks:
+  devops-net:
+    driver: bridge

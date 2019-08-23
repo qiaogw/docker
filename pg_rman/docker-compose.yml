@@ -11,7 +11,7 @@ services:
       - /dockerdata/postgres:/var/lib/postgresql:Z #:Z 解决与 SELinux 相关的权限问题 #将数据映射到对应的路径
     environment:
       - POSTGRES_PASSWORD=pgadmin123456  #密码
-      - POSTGRES_USER=pgadmin
+      - POSTGRES_USER:=pgadmin
       - PGDATA=/var/lib/postgresql/data/pgdata #数据存储文件夹
       - POSTGRES_DB=mydb
     networks:
