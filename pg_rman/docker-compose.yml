@@ -6,7 +6,7 @@ services:
     user: "70:root"
     volumes:
       - /dockerdata/postgres/data:/pg_data:z
-      - /dockerdata/postgres/backup:/backup:z
+      - /dockerdata/postgres/data/backup:/backup:z
     networks:
       - dev-net
     environment:
