@@ -11,9 +11,9 @@ services:
       - dev-net
     environment:
       - PGHOST=postgres  
-      - PGUSER=postgres  
+      - PGUSER=sonar  
       - PGDATABASE=postgres  
-      - PGPASS=  
+      - PGPASS=sonar  
       - PGPORT=5432  
 networks:
   dev-net:
