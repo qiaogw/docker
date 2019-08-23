@@ -1,21 +1,20 @@
 version: "3"
 
 services:
-  postgres:
-    image: postgres:alpine   #postgres 镜像
-    hostname: postgres   
-    ports:
-      - 5432:5432  #映射端口号
+  pg_rman:
+    image: nexus.onstream-cloud.com/pg_rman
+    user: "70:root"
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /dockerdata/postgres:/var/lib/postgresql:Z #:Z 解决与 SELinux 相关的权限问题 #将数据映射到对应的路径
-    environment:
-      - POSTGRES_PASSWORD=pgadmin123456  #密码
-      - POSTGRES_USER:=pgadmin
-      - PGDATA=/var/lib/postgresql/data/pgdata #数据存储文件夹
-      - POSTGRES_DB=mydb
+      - ./postgres:/pg_data
+      - /host/path/to/backup:/backup
     networks:
       - dev-net
+    environment:
+      - PGHOST=postgres  
+      - PGUSER=postgres  
+      - PGDATABASE=postgres  
+      - PGPASS=  
+      - PGPORT=5432  
 networks:
   dev-net:
     external: true

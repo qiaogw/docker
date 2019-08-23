@@ -8,12 +8,10 @@ services:
       - 5432:5432  #映射端口号
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /dockerdata/postgres:/var/lib/postgresql:Z #:Z 解决与 SELinux 相关的权限问题 #将数据映射到对应的路径
+      - /dockerdata/postgres/data:/var/lib/postgresql/data:Z #:Z 解决与 SELinux 相关的权限问题 #将数据映射到对应的路径
     environment:
-      - POSTGRES_PASSWORD=pgadmin123456  #密码
-      - POSTGRES_USER=pgadmin
-      - PGDATA=/var/lib/postgresql/data/pgdata #数据存储文件夹
-      - POSTGRES_DB=mydb
+      - POSTGRES_PASSWORD=sonar  #密码
+      - POSTGRES_USER=sonar
     networks:
       - dev-net
 networks:
