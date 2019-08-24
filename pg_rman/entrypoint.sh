@@ -8,4 +8,3 @@ fi
 
 pg_rman "$@"
 
-/bin/sh
