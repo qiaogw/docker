@@ -15,7 +15,7 @@ services:
       - PGDATABASE=postgres  
       - PGPASS=sonar  
       - PGPORT=5432  
-      - PGDATA=/dockerdata/postgres/data
+      - PGDATA=/var/lib/postgresql/data
       - DB_HOST=postgres  
       - DB_USER=sonar  
       - DB_NAME=postgres  
