@@ -5,8 +5,8 @@ services:
     image: nexus.onstream-cloud.com/pg_rman
     user: "70:root"
     volumes:
-      - /dockerdata/postgres/data:/pg_data:z
-      - /dockerdata/backup/postgres:/backup:z
+      - /dockerdata/postgres/data:/pg_data:Z
+      - /dockerdata/postgres/backup:/backup:Z
     networks:
       - dev-net
     environment:
