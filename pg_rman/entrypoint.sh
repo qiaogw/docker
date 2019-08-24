@@ -7,3 +7,5 @@ if [ $# -eq 0 ]; then
 fi
 
 pg_rman "$@"
+
+/bin/sh
