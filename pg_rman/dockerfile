@@ -28,4 +28,3 @@ ENV BACKUP_PATH /var/lib/postgresql/data/backup
 VOLUME ["/pg_data", "/backup"]
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["/bin/sh"]
