@@ -6,7 +6,7 @@ services:
     user: "70:root"
     volumes:
       - /dockerdata/postgres/data:/pg_data:Z
-      - /dockerdata/postgres/backup:/backup:Z
+      - /dockerdata/postgres/data/backup:/backup:Z
     networks:
       - dev-net
     environment:
@@ -15,7 +15,6 @@ services:
       - PGDATABASE=postgres  
       - PGPASS=sonar  
       - PGPORT=5432  
-      - PGDATA=/var/lib/postgresql/data
       - DB_HOST=postgres  
       - DB_USER=sonar  
       - DB_NAME=postgres  
