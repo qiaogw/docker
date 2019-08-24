@@ -5,11 +5,11 @@ services:
     hostname: clustercontrol
     privileged: true
     volumes:
-    - "./storage1/clustercontrol/cmon.d:/etc/cmon.d"
-    - "./storage2/clustercontrol/sshkey:/root/.ssh"
-    - "./storage3/clustercontrol/cmonlib:/var/lib/cmon"
-    - "./storage4/clustercontrol/cmon.d:/etc/cmon.d"
-    - "./storage5/clustercontrol/backups:/root/backups"
+    - dockerdata/clustercontrol/cmon.d:/etc/cmon.d
+    - dockerdata/clustercontrol/sshkey:/root/.ssh
+    - dockerdata/clustercontrol/cmonlib:/var/lib/cmon
+    - dockerdata/clustercontrol/cmon.d:/etc/cmon.d
+    - dockerdata/clustercontrol/backups:/root/backups
     ports:
     - "5000:80"
     - "5001:443"
