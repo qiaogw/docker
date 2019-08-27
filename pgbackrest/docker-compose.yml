@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  pg_rman:
+    image: nexus.onstream-cloud.com/pg_rman
+    user: "70:root"
+    volumes:
+      - /dockerdata/postgres/data:/pg_data:Z
+      - /dockerdata/postgres/data/backup:/backup:Z
+    networks:
+      - dev-net
+    environment:
+      - PGHOST=postgres  
+      - PGUSER=sonar  
+      - PGDATABASE=postgres  
+      - PGPASS=sonar  
+      - PGPORT=5432  
+      - DB_HOST=postgres  
+      - DB_USER=sonar  
+      - DB_NAME=postgres  
+      - DB_PASS=sonar
+      - DB_PORT=5432
+
+networks:
+  dev-net:
+    external: true

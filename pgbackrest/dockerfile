@@ -1,0 +1,59 @@
+FROM nexus.onstream-cloud.com/alpine-base:v3.10
+
+ARG RMAN_VER=1.3.8
+ENV PACKAGE_URL https://github.com/ossc-db/pg_rman/archive/V${RMAN_VER}.tar.gz
+
+ENV LANG=zh_CN.UTF-8 \
+    LC_ALL=zh_CN.UTF-8 \
+    LANGUAGE=zh_CN:zh  \
+    TERM=xterm \
+    TZ=Asia/Shanghai
+
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories 
+
+RUN mkdir /build
+
+RUN apk update && apk add --no-cache --virtual    \
+    build-dependencies build-base perl  perl-dev musl-dev make gcc && \
+    libxml2-dev libxml2   libxml2-dev   libressl-dev   \
+    echo ${PACKAGE_URL} && \
+    wget -q -O - \
+       https://github.com/pgbackrest/pgbackrest/archive/release/2.16.tar.gz | \
+       tar zx -C /build &&  \
+    make -s -C /build/pgbackrest-release-2.16/src && \ 
+    cp /root/pgbackrest-release-2.16/src/pgbackrest /usr/bin && \
+    chmod 755 /usr/bin/pgbackrest && \
+    rm -rf /build && \
+    apk del build-dependencies --purge
+
+RUN mkdir -p -m 770 /var/log/pgbackrest \
+    chown postgres:postgres /var/log/pgbackrest && \
+    mkdir -p /var/lib/pgbackrest && \
+    chmod 750 /var/lib/pgbackrest && \
+    chown postgres:postgres /var/lib/pgbackrest && \
+    mkdir -p /etc/pgbackrest && \
+    mkdir -p /etc/pgbackrest/conf.d && \
+    touch /etc/pgbackrest/pgbackrest.conf && \
+    chmod 640 /etc/pgbackrest/pgbackrest.conf && \
+    chown postgres:postgres /etc/pgbackrest/pgbackrest.conf && \
+    sed -ri 's/^#wal_level\s+.*/wal_level = replica/' /var/lib/postgresql/data/postgresql.conf && \
+    sed -ri "s/^#archive_command\s+.*/archive_command = 'pgbackrest --stanza=demo archive-push %p'/" /var/lib/postgresql/data/postgresql.conf && \
+    sed -ri "s/^#archive_mode\s+.*/archive_mode = on/" /var/lib/postgresql/data/postgresql.conf && \
+    sed -ri "s/^#log_line_prefix\s+.*/log_line_prefix = ''/" /var/lib/postgresql/data/postgresql.conf && \
+    sed -ri "s/^#max_wal_senders\s+.*/max_wal_senders = 3/" /var/lib/postgresql/data/postgresql.conf  && \
+    echo "[demo]" >> /etc/pgbackrest/pgbackrest.conf  && \
+    echo "pg1-path=/var/lib/postgresql/data" >> /etc/pgbackrest/pgbackrest.conf  && \
+    echo "[global]" >> /etc/pgbackrest/pgbackrest.conf  && \
+    echo " repo1-path=/var/lib/pgbackrest" >> /etc/pgbackrest/pgbackrest.conf  && \
+    echo " repo1-retention-full=2" >> /etc/pgbackrest/pgbackrest.conf  && \
+    echo "[global:archive-push]" >> /etc/pgbackrest/pgbackrest.conf  && \
+    echo "compress-level=3" >> /etc/pgbackrest/pgbackrest.conf  
+
+WORKDIR /
+COPY ./entrypoint.sh /entrypoint.sh
+
+ENV PGDATA /var/lib/postgresql/data
+ENV BACKUP_PATH /backup
+VOLUME ["/pg_data", "/backup"]
+
+ENTRYPOINT ["/entrypoint.sh"]

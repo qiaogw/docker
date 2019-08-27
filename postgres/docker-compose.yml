@@ -11,8 +11,8 @@ services:
       - /dockerdata/postgres/data:/var/lib/postgresql/data:Z #:Z 解决与 SELinux 相关的权限问题 #将数据映射到对应的路径
       - /dockerdata/postgres/wal_archive:/archive:Z
     environment:
-      - POSTGRES_PASSWORD=sonar  #密码
-      - POSTGRES_USER=sonar
+      - POSTGRES_PASSWORD=postgres  #密码
+      - POSTGRES_USER=postgres
     networks:
       - dev-net
 networks:
