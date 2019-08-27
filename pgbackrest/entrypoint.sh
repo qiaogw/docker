@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 #sed -ri 's/^#wal_level\s+.*/wal_level = replica/' $PGDATA/postgresql.conf 
 #sed -ri "s/^#archive_command\s+.*/archive_command = 'pgbackrest --stanza=demo archive-push %p'/" $PGDATA/postgresql.conf 
@@ -12,3 +12,4 @@ echo " repo1-path=/var/lib/pgbackrest" >> /etc/pgbackrest/pgbackrest.conf
 echo " repo1-retention-full=2" >> /etc/pgbackrest/pgbackrest.conf  
 echo "[global:archive-push]" >> /etc/pgbackrest/pgbackrest.conf  
 echo "compress-level=3" >> /etc/pgbackrest/pgbackrest.conf  
+
