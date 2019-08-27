@@ -178,7 +178,7 @@ mkdir -p /etc/pgbackrest/conf.d
 touch /etc/pgbackrest/pgbackrest.conf 
 chmod 640 /etc/pgbackrest/pgbackrest.conf 
 chown postgres:postgres /etc/pgbackrest/pgbackrest.conf 
-whoami
+
 sed -ri 's/^#wal_level\s+.*/wal_level = replica/' $PGDATA/postgresql.conf 
 sed -ri "s/^#archive_command\s+.*/archive_command = 'pgbackrest --stanza=demo archive-push %p'/" $PGDATA/postgresql.conf 
 sed -ri "s/^#archive_mode\s+.*/archive_mode = on/" $PGDATA/postgresql.conf 
