@@ -4,6 +4,7 @@ services:
   postgres:
     image: nexus.onstream-cloud.com/postgres   #postgres 镜像
     hostname: postgres   
+    user: postgres
     ports:
       - 5432:5432  #映射端口号
     volumes:
