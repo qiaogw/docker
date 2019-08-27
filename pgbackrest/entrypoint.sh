@@ -168,16 +168,7 @@ if [ "$1" = 'postgres' ]; then
 		echo
 	fi
 fi
-mkdir -p -m 770 /var/log/pgbackrest 
-chown postgres:postgres /var/log/pgbackrest 
-mkdir -p /var/lib/pgbackrest
-chmod 750 /var/lib/pgbackrest 
-chown postgres:postgres /var/lib/pgbackrest 
-mkdir -p /etc/pgbackrest 
-mkdir -p /etc/pgbackrest/conf.d
-touch /etc/pgbackrest/pgbackrest.conf 
-chmod 640 /etc/pgbackrest/pgbackrest.conf 
-chown postgres:postgres /etc/pgbackrest/pgbackrest.conf 
+
 
 sed -ri 's/^#wal_level\s+.*/wal_level = replica/' $PGDATA/postgresql.conf 
 sed -ri "s/^#archive_command\s+.*/archive_command = 'pgbackrest --stanza=demo archive-push %p'/" $PGDATA/postgresql.conf 
