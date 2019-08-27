@@ -1,6 +1,6 @@
-FROM nexus.onstream-cloud.com/alpine-base:v3.10
+FROM postgres:alpine
 
-ARG RMAN_VER=1.3.8
+
 ENV PACKAGE_URL https://github.com/ossc-db/pg_rman/archive/V${RMAN_VER}.tar.gz
 
 ENV LANG=zh_CN.UTF-8 \
@@ -9,20 +9,20 @@ ENV LANG=zh_CN.UTF-8 \
     TERM=xterm \
     TZ=Asia/Shanghai
 
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories 
-
-RUN mkdir /build
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories && \
+   mkdir /build
 
 RUN apk update && apk add --no-cache --virtual    \
-    build-dependencies build-base perl  perl-dev musl-dev make gcc && \
-    libxml2-dev libxml2   libxml2-dev   libressl-dev   \
-    echo ${PACKAGE_URL} && \
+    build-dependencies build-base perl  perl-dev musl-dev make gcc \
+    libxml2-dev libxml2  libressl-dev 	openssl-dev && \
     wget -q -O - \
        https://github.com/pgbackrest/pgbackrest/archive/release/2.16.tar.gz | \
        tar zx -C /build &&  \
+    cd /build/pgbackrest-release-2.16/src && ./configure &&  \
     make -s -C /build/pgbackrest-release-2.16/src && \ 
-    cp /root/pgbackrest-release-2.16/src/pgbackrest /usr/bin && \
+    cp /build/pgbackrest-release-2.16/src/pgbackrest /usr/bin && \
     chmod 755 /usr/bin/pgbackrest && \
+    cd / && \
     rm -rf /build && \
     apk del build-dependencies --purge
 
@@ -49,11 +49,7 @@ RUN mkdir -p -m 770 /var/log/pgbackrest \
     echo "[global:archive-push]" >> /etc/pgbackrest/pgbackrest.conf  && \
     echo "compress-level=3" >> /etc/pgbackrest/pgbackrest.conf  
 
-WORKDIR /
-COPY ./entrypoint.sh /entrypoint.sh
+USER postgres
 
-ENV PGDATA /var/lib/postgresql/data
-ENV BACKUP_PATH /backup
-VOLUME ["/pg_data", "/backup"]
 
 ENTRYPOINT ["/entrypoint.sh"]
