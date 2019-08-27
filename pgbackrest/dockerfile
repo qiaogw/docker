@@ -35,12 +35,14 @@ RUN mkdir -p -m 770 /var/log/pgbackrest \
     mkdir -p /etc/pgbackrest/conf.d && \
     touch /etc/pgbackrest/pgbackrest.conf && \
     chmod 640 /etc/pgbackrest/pgbackrest.conf && \
-    chown postgres:postgres /etc/pgbackrest/pgbackrest.conf
+    chown postgres:postgres /etc/pgbackrest/pgbackrest.conf && \
+    whoami
 
 
 COPY entrypoint.sh /entrypoint.sh
 
+USER postgres
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-USER postgres
+
