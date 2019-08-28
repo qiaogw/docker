@@ -171,7 +171,7 @@ if [ "$1" = 'postgres' ]; then
 		mkdir -p "$PGDATA/log"
 		chmod 770 "$PGDATA/log"
 		chown -R postgres  "$PGDATA/log"
-		
+
 		sed -ri 's/^#wal_level\s+.*/wal_level = replica/' $PGDATA/postgresql.conf 
         sed -ri "s/^#archive_command\s+.*/archive_command = 'pgbackrest --stanza=demo archive-push %p'/" $PGDATA/postgresql.conf 
         sed -ri "s/^#archive_mode\s+.*/archive_mode = on/" $PGDATA/postgresql.conf 
@@ -186,6 +186,13 @@ if [ "$1" = 'postgres' ]; then
 		echo " repo1-retention-full=2" >> /etc/pgbackrest/pgbackrest.conf  
 		echo "[global:archive-push]" >> /etc/pgbackrest/pgbackrest.conf  
 		echo "compress-level=3" >> /etc/pgbackrest/pgbackrest.conf  
+
+		sed -ri 's/^#logging_collector\s+.*/logging_collector = on  /' $PGDATA/postgresql.conf 
+        sed -ri "s/^#log_directory\s+.*/log_directory = '$LOGDIR'/" $PGDATA/postgresql.conf 
+        sed -ri "s/^#log_filename\s+.*/log_filename = 'postgresql-%a.log'/" $PGDATA/postgresql.conf 
+        sed -ri "s/^#log_truncate_on_rotation\s+.*/log_truncate_on_rotation = on/" $PGDATA/postgresql.conf
+        sed -ri "s/^#log_rataion_age\s+.*/log_rataion_age = 1d/" $PGDATA/postgresql.conf
+        sed -ri "s/^#log_ratation_size\s+.*/log_ratation_size = 0/" $PGDATA/postgresql.conf
 
 	fi
 fi
