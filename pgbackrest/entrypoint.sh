@@ -3,8 +3,8 @@
 source /docker-entrypoint.sh #引入postgres脚本
 
 mkdir -p "$PGBACK" 
-chmod 750 "$PGBACK"
 chown -R postgres  "$PGBACK"
+chmod 750 "$PGBACK"
 
 sed -ri 's/^#wal_level\s+.*/wal_level = replica/' $PGDATA/postgresql.conf 
 sed -ri "s/^#archive_command\s+.*/archive_command = 'pgbackrest --stanza=demo archive-push %p'/" $PGDATA/postgresql.conf 
