@@ -175,18 +175,7 @@ if [ "$1" = 'postgres' ]; then
 		echo
 		echo 'PostgreSQL init process complete; ready for start up.'
 		echo
-        sed -ri 's/^#wal_level\s+.*/wal_level = replica/' $PGDATA/postgresql.conf 
-        sed -ri "s/^#archive_command\s+.*/archive_command = 'pgbackrest --stanza=demo archive-push %p'/" $PGDATA/postgresql.conf 
-        sed -ri "s/^#archive_mode\s+.*/archive_mode = on/" $PGDATA/postgresql.conf 
-        sed -ri "s/^#log_line_prefix\s+.*/log_line_prefix = ''/" $PGDATA/postgresql.conf
-        sed -ri "s/^#max_wal_senders\s+.*/max_wal_senders = 3/" $PGDATA/postgresql.conf  
 
-        sed -ri 's/^#logging_collector\s+.*/logging_collector = on  /' $PGDATA/postgresql.conf 
-        sed -ri "s/^#log_directory\s+.*/log_directory = '$PGDATA/log'/" $PGDATA/postgresql.conf 
-        sed -ri "s/^#log_filename\s+.*/log_filename = 'postgresql-%a.log'/" $PGDATA/postgresql.conf 
-        sed -ri "s/^#log_truncate_on_rotation\s+.*/log_truncate_on_rotation = on/" $PGDATA/postgresql.conf
-        sed -ri "s/^#log_rataion_age\s+.*/log_rataion_age = 1d/" $PGDATA/postgresql.conf
-        sed -ri "s/^#log_ratation_size\s+.*/log_ratation_size = 0/" $PGDATA/postgresql.conf
 
 	fi
 fi
@@ -202,6 +191,17 @@ echo " repo1-retention-full=2" >> /etc/pgbackrest/pgbackrest.conf
 echo "[global:archive-push]" >> /etc/pgbackrest/pgbackrest.conf  
 echo "compress-level=3" >> /etc/pgbackrest/pgbackrest.conf  
 
+        sed -ri 's/^#wal_level\s+.*/wal_level = replica/' $PGDATA/postgresql.conf 
+        sed -ri "s/^#archive_command\s+.*/archive_command = 'pgbackrest --stanza=demo archive-push %p'/" $PGDATA/postgresql.conf 
+        sed -ri "s/^#archive_mode\s+.*/archive_mode = on/" $PGDATA/postgresql.conf 
+        sed -ri "s/^#log_line_prefix\s+.*/log_line_prefix = ''/" $PGDATA/postgresql.conf
+        sed -ri "s/^#max_wal_senders\s+.*/max_wal_senders = 3/" $PGDATA/postgresql.conf  
 
+        sed -ri 's/^#logging_collector\s+.*/logging_collector = on  /' $PGDATA/postgresql.conf 
+        sed -ri "s/^#log_directory\s+.*/log_directory = '$PGDATA/log'/" $PGDATA/postgresql.conf 
+        sed -ri "s/^#log_filename\s+.*/log_filename = 'postgresql-%a.log'/" $PGDATA/postgresql.conf 
+        sed -ri "s/^#log_truncate_on_rotation\s+.*/log_truncate_on_rotation = on/" $PGDATA/postgresql.conf
+        sed -ri "s/^#log_rataion_age\s+.*/log_rataion_age = 1d/" $PGDATA/postgresql.conf
+        sed -ri "s/^#log_ratation_size\s+.*/log_ratation_size = 0/" $PGDATA/postgresql.conf
 
 exec "$@"
