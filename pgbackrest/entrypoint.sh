@@ -1,25 +1,6 @@
 #!/usr/bin/env bash
 
 set -Eeo pipefail
-function trap_sigterm() {
-    echo_warn "Signal trap triggered, beginning shutdown.." >> $PGDATA/trap.output
-    echo_warn "Signal trap triggered, beginning shutdown.."
-
-    # Clean shutdowns begin here (force fast mode in case of PostgreSQL < 9.5)
-    echo_info "Cleanly shutting down PostgreSQL in force fast mode.."
-    pg_ctl -w -D $PGDATA -m fast stop
-
-    # Unclean shutdowns begin here (if all else fails)
-    if [ -f $PGDATA/postmaster.pid ]; then
-            kill -SIGINT $(head -1 $PGDATA/postmaster.pid) >> $PGDATA/trap.output
-    fi
-    if [[ ${ENABLE_SSHD} == "true" ]]; then
-        echo_info "killing SSHD.."
-        killall sshd
-    fi
-}
-
-trap 'trap_sigterm' SIGINT SIGTERM
 
 whoami
 mkdir -p "$PGBACK" 
@@ -189,9 +170,7 @@ if [ "$1" = 'postgres' ]; then
 
 		unset PGPASSWORD
 
-		echo
-		echo 'PostgreSQL init process complete; ready for start up.'
-		echo
+
 
 
         LOGDIR="$PGDATA/log"
@@ -204,34 +183,36 @@ if [ "$1" = 'postgres' ]; then
         sed -ri "s/^#log_line_prefix\s+.*/log_line_prefix = ''/" $PGDATA/postgresql.conf
         sed -ri "s/^#max_wal_senders\s+.*/max_wal_senders = 3/" $PGDATA/postgresql.conf  
 
+        cat /dev/null >  /etc/pgbackrest/pgbackrest.conf  
+        echo "[demo]" >> /etc/pgbackrest/pgbackrest.conf  
+        echo "pg1-path=$PGDATA" >> /etc/pgbackrest/pgbackrest.conf  
+        echo "[global]" >> /etc/pgbackrest/pgbackrest.conf  
+        echo " repo1-path=$PGBACK" >> /etc/pgbackrest/pgbackrest.conf
+        echo " repo1-retention-full=2" >> /etc/pgbackrest/pgbackrest.conf  
+        echo "[global:archive-push]" >> /etc/pgbackrest/pgbackrest.conf  
+        echo "compress-level=3" >> /etc/pgbackrest/pgbackrest.conf  
+		PGUSER="${PGUSER:-$POSTGRES_USER}" \
+		pg_ctl -D "$PGDATA" \
+			-o "-c listen_addresses=''" \
+			-w start
+        echo
+		echo 'pgbackrest init process complete.'
+		echo
+        pgbackrest --stanza=demo --log-level-console=info stanza-create
 
-
+        PGUSER="${PGUSER:-$POSTGRES_USER}" \
+		pg_ctl -D "$PGDATA" -m fast -w stop
+        echo
+		echo 'PostgreSQL init process complete; ready for start up.'
+		echo
 	fi
 fi
 
 
 
-cat /dev/null >  /etc/pgbackrest/pgbackrest.conf  
-echo "[demo]" >> /etc/pgbackrest/pgbackrest.conf  
-echo "pg1-path=$PGDATA" >> /etc/pgbackrest/pgbackrest.conf  
-echo "[global]" >> /etc/pgbackrest/pgbackrest.conf  
-echo " repo1-path=$PGBACK" >> /etc/pgbackrest/pgbackrest.conf
-echo " repo1-retention-full=2" >> /etc/pgbackrest/pgbackrest.conf  
-echo "[global:archive-push]" >> /etc/pgbackrest/pgbackrest.conf  
-echo "compress-level=3" >> /etc/pgbackrest/pgbackrest.conf  
-
-
-echo  "Starting PostgreSQL.."
-postgres -D $PGDATA 
-
-pgbackrest --stanza=demo --log-level-console=info stanza-create
 
 
 
-# exec "$@"
-# We will wait indefinitely until "docker stop [container_id]"
-# When that happens, we route to the "trap_sigterm" function above
-wait
 
-echo_info "PostgreSQL is shutting down. Exiting.."
 
+exec "$@"
