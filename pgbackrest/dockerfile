@@ -25,7 +25,7 @@ RUN apk update && apk add --no-cache --virtual    \
     cd / && \
     rm -rf /build 
 
-RUN  wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/1.9/gosu-$(dpkg --print-architecture)" && \
+RUN  wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/1.9/gosu-amd64" && \
    chmod +x /usr/local/bin/gosu 
 
 RUN mkdir -p -m 770 /var/log/pgbackrest && \
