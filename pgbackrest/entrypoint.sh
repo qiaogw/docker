@@ -185,12 +185,7 @@ if [ "$1" = 'postgres' ]; then
         sed -ri "s/^#log_line_prefix\s+.*/log_line_prefix = ''/" $PGDATA/postgresql.conf
         sed -ri "s/^#max_wal_senders\s+.*/max_wal_senders = 3/" $PGDATA/postgresql.conf  
 
-        sed -ri 's/^#logging_collector\s+.*/logging_collector = on  /' $PGDATA/postgresql.conf 
-        sed -ri "s/^#log_directory\s+.*/log_directory = '$LOGDIR'/" $PGDATA/postgresql.conf 
-        sed -ri "s/^#log_filename\s+.*/log_filename = 'postgresql-%a.log'/" $PGDATA/postgresql.conf 
-        sed -ri "s/^#log_truncate_on_rotation\s+.*/log_truncate_on_rotation = on/" $PGDATA/postgresql.conf
-        sed -ri "s/^#log_rataion_age\s+.*/log_rataion_age = 1d/" $PGDATA/postgresql.conf
-        sed -ri "s/^#log_ratation_size\s+.*/log_ratation_size = 0/" $PGDATA/postgresql.conf
+
 
 	fi
 fi
