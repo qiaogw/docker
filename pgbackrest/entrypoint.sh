@@ -221,7 +221,7 @@ echo "[global:archive-push]" >> /etc/pgbackrest/pgbackrest.conf
 echo "compress-level=3" >> /etc/pgbackrest/pgbackrest.conf  
 
 
-echo_info "Starting PostgreSQL.."
+echo  "Starting PostgreSQL.."
 postgres -D $PGDATA 
 
 pgbackrest --stanza=demo --log-level-console=info stanza-create
