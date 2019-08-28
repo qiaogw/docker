@@ -170,7 +170,9 @@ if [ "$1" = 'postgres' ]; then
 
 		unset PGPASSWORD
 
-
+		echo
+		echo 'PostgreSQL init process complete; ready for start up.'
+		echo
 
 
         LOGDIR="$PGDATA/log"
@@ -183,29 +185,23 @@ if [ "$1" = 'postgres' ]; then
         sed -ri "s/^#log_line_prefix\s+.*/log_line_prefix = ''/" $PGDATA/postgresql.conf
         sed -ri "s/^#max_wal_senders\s+.*/max_wal_senders = 3/" $PGDATA/postgresql.conf  
 
-        cat /dev/null >  /etc/pgbackrest/pgbackrest.conf  
-        echo "[demo]" >> /etc/pgbackrest/pgbackrest.conf  
-        echo "pg1-path=$PGDATA" >> /etc/pgbackrest/pgbackrest.conf  
-        echo "[global]" >> /etc/pgbackrest/pgbackrest.conf  
-        echo " repo1-path=$PGBACK" >> /etc/pgbackrest/pgbackrest.conf
-        echo " repo1-retention-full=2" >> /etc/pgbackrest/pgbackrest.conf  
-        echo "[global:archive-push]" >> /etc/pgbackrest/pgbackrest.conf  
-        echo "compress-level=3" >> /etc/pgbackrest/pgbackrest.conf  
-		PGUSER="${PGUSER:-$POSTGRES_USER}" \
-		pg_ctl -D "$PGDATA" \
-			-o "-c listen_addresses=''" \
-			-w start
-        echo
-		echo 'pgbackrest init process complete.'
-		echo
-        pgbackrest --stanza=demo --log-level-console=info stanza-create
 
-        PGUSER="${PGUSER:-$POSTGRES_USER}" \
-		pg_ctl -D "$PGDATA" -m fast -w stop
-        echo
-		echo 'PostgreSQL init process complete; ready for start up.'
-		echo
+
 	fi
 fi
+
+
+
+cat /dev/null >  /etc/pgbackrest/pgbackrest.conf  
+echo "[demo]" >> /etc/pgbackrest/pgbackrest.conf  
+echo "pg1-path=$PGDATA" >> /etc/pgbackrest/pgbackrest.conf  
+echo "[global]" >> /etc/pgbackrest/pgbackrest.conf  
+echo " repo1-path=$PGBACK" >> /etc/pgbackrest/pgbackrest.conf
+echo " repo1-retention-full=2" >> /etc/pgbackrest/pgbackrest.conf  
+echo "[global:archive-push]" >> /etc/pgbackrest/pgbackrest.conf  
+echo "compress-level=3" >> /etc/pgbackrest/pgbackrest.conf  
+
+
+
 
 exec "$@"
