@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-source /docker-entrypoint.sh #引入postgres脚本
+
 
 mkdir -p "$PGBACK" 
-chown -R postgres:postgres  "$PGBACK"
+chown -R postgres  "$PGBACK"
 chmod 750 "$PGBACK"
 
 sed -ri 's/^#wal_level\s+.*/wal_level = replica/' $PGDATA/postgresql.conf 
@@ -18,5 +18,7 @@ echo " repo1-path=$PGBACK" >> /etc/pgbackrest/pgbackrest.conf
 echo " repo1-retention-full=2" >> /etc/pgbackrest/pgbackrest.conf  
 echo "[global:archive-push]" >> /etc/pgbackrest/pgbackrest.conf  
 echo "compress-level=3" >> /etc/pgbackrest/pgbackrest.conf  
+
+source /docker-entrypoint.sh #引入postgres脚本
 
 gosu postgres exec "$@"
