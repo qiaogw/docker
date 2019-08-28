@@ -9,7 +9,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /dockerdata/postgres/data:/var/lib/postgresql/data:Z #:Z 解决与 SELinux 相关的权限问题 #将数据映射到对应的路径
-      - /dockerdata/postgres/backup:/pgbakup
+      - /dockerdata/postgres/backup:/var/lib/pgbackrest
     environment:
       - POSTGRES_PASSWORD=postgres  #密码
       - POSTGRES_USER=postgres
