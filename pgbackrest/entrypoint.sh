@@ -19,4 +19,4 @@ echo " repo1-retention-full=2" >> /etc/pgbackrest/pgbackrest.conf
 echo "[global:archive-push]" >> /etc/pgbackrest/pgbackrest.conf  
 echo "compress-level=3" >> /etc/pgbackrest/pgbackrest.conf  
 
-exec "$@"
+gosu postgres exec "$@"
