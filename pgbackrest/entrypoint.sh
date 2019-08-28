@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 
 set -Eeo pipefail
+
+whoami
+mkdir -p "$PGBACK" 
+chmod 750 "$PGBACK"
+chown -R postgres  "$PGBACK"
+
 # TODO swap to -Eeuo pipefail above (after handling all potentially-unset variables)
 
 # usage: file_env VAR [DEFAULT]
@@ -169,10 +175,7 @@ if [ "$1" = 'postgres' ]; then
 	fi
 fi
 
-whoami
-mkdir -p "$PGBACK" 
-chmod 750 "$PGBACK"
-chown -R postgres  "$PGBACK"
+
 
 
 echo "[demo]" >> /etc/pgbackrest/pgbackrest.conf  
