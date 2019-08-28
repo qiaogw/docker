@@ -177,6 +177,7 @@ if [ "$1" = 'postgres' ]; then
         sed -ri "s/^#max_wal_senders\s+.*/max_wal_senders = 3/" $PGDATA/postgresql.conf  
 
 		cat /dev/null >  /etc/pgbackrest/pgbackrest.conf  
+
 		echo "[demo]" >> /etc/pgbackrest/pgbackrest.conf  
 		echo "pg1-path=$PGDATA" >> /etc/pgbackrest/pgbackrest.conf  
 		echo "[global]" >> /etc/pgbackrest/pgbackrest.conf  
@@ -184,7 +185,9 @@ if [ "$1" = 'postgres' ]; then
 		echo " repo1-retention-full=2" >> /etc/pgbackrest/pgbackrest.conf  
 		echo "[global:archive-push]" >> /etc/pgbackrest/pgbackrest.conf  
 		echo "compress-level=3" >> /etc/pgbackrest/pgbackrest.conf  
-		
+		echo
+		echo 'pgbackrest init process complete; ready for start up.'
+		echo
 
 		mkdir -p "$LOGDIR"
 		chmod 770 "$LOGDIR"
@@ -195,6 +198,9 @@ if [ "$1" = 'postgres' ]; then
 		sed -ri "s/^#log_truncate_on_rotation\s+.*/log_truncate_on_rotation = on/" $PGDATA/postgresql.conf
 		sed -ri "s/^#log_rataion_age\s+.*/log_rataion_age = 1d/" $PGDATA/postgresql.conf
 		sed -ri "s/^#log_ratation_size\s+.*/log_ratation_size = 0/" $PGDATA/postgresql.conf
+		echo
+		echo 'pgbackrest init process complete; ready for start up.'
+		echo
 		PGUSER="${PGUSER:-$POSTGRES_USER}" \
 		pg_ctl -D "$PGDATA" \
 			-o "-c listen_addresses=''" \
