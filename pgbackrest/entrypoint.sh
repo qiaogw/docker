@@ -28,4 +28,4 @@ sed -ri "s/^#max_wal_senders\s+.*/max_wal_senders = 3/" $PGDATA/postgresql.conf
 
 
 
-gosu postgres exec "$@"
+exec "$@"
