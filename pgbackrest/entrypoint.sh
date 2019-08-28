@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 source /docker-entrypoint.sh #引入postgres脚本
+
 mkdir -p "$PGBACK" 
 chmod 750 "$PGBACK"
 chown -R postgres  "$PGBACK"
