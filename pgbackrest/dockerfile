@@ -46,4 +46,4 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 5432
 
-CMD [""]
+CMD ["postgres"]
