@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 set -Eeo pipefail
+
+mkdir -p "$PGBACK" 
+chmod 750 "$PGBACK"
+chown -R postgres  "$PGBACK"
+mkdir -p "$PGDATA/log"
+chmod 770 "$PGDATA/log"
+chown -R postgres  "$PGDATA/log"
 # TODO swap to -Eeuo pipefail above (after handling all potentially-unset variables)
 
 # usage: file_env VAR [DEFAULT]
@@ -165,13 +172,6 @@ if [ "$1" = 'postgres' ]; then
 		echo
 		echo 'PostgreSQL init process complete; ready for start up.'
 		echo
-		mkdir -p "$PGBACK" 
-		chmod 750 "$PGBACK"
-		chown -R postgres  "$PGBACK"
-		mkdir -p "$PGDATA/log"
-		chmod 770 "$PGDATA/log"
-		chown -R postgres  "$PGDATA/log"
-
 		sed -ri 's/^#wal_level\s+.*/wal_level = replica/' $PGDATA/postgresql.conf 
         sed -ri "s/^#archive_command\s+.*/archive_command = 'pgbackrest --stanza=demo archive-push %p'/" $PGDATA/postgresql.conf 
         sed -ri "s/^#archive_mode\s+.*/archive_mode = on/" $PGDATA/postgresql.conf 
