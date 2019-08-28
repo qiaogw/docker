@@ -37,6 +37,10 @@ RUN     mkdir -p /var/lib/pgbackrest && \
     chown postgres:postgres /var/lib/pgbackrest && \
     chmod 750 /var/lib/pgbackrest 
 
+RUN     mkdir -p /pgback && \
+    chown postgres:postgres /pgback && \
+    chmod 750 /pgback
+
 COPY entrypoint.sh /entrypoint.sh
 
 
