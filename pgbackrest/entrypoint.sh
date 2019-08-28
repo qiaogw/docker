@@ -184,7 +184,7 @@ if [ "$1" = 'postgres' ]; then
 		echo " repo1-retention-full=2" >> /etc/pgbackrest/pgbackrest.conf  
 		echo "[global:archive-push]" >> /etc/pgbackrest/pgbackrest.conf  
 		echo "compress-level=3" >> /etc/pgbackrest/pgbackrest.conf  
-		LOGDIR="$PGDATA/log"
+		
 
 		mkdir -p "$LOGDIR"
 		chmod 770 "$LOGDIR"
@@ -193,6 +193,7 @@ if [ "$1" = 'postgres' ]; then
 	fi
 fi
 
+LOGDIR="$PGDATA/log"
 sed -ri 's/^#logging_collector\s+.*/logging_collector = on  /' $PGDATA/postgresql.conf 
 sed -ri "s/^#log_directory\s+.*/log_directory = '$LOGDIR'/" $PGDATA/postgresql.conf 
 sed -ri "s/^#log_filename\s+.*/log_filename = 'postgresql-%a.log'/" $PGDATA/postgresql.conf 
