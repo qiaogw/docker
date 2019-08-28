@@ -169,6 +169,7 @@ if [ "$1" = 'postgres' ]; then
 	fi
 fi
 
+whoami
 mkdir -p "$PGBACK" 
 chmod 750 "$PGBACK"
 chown -R postgres  "$PGBACK"
