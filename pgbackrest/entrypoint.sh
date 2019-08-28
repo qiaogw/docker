@@ -177,7 +177,7 @@ fi
 
 
 
-
+cat /dev/null >  /etc/pgbackrest/pgbackrest.conf  
 echo "[demo]" >> /etc/pgbackrest/pgbackrest.conf  
 echo "pg1-path=$PGDATA" >> /etc/pgbackrest/pgbackrest.conf  
 echo "[global]" >> /etc/pgbackrest/pgbackrest.conf  
