@@ -4,7 +4,7 @@ set -Eeo pipefail
 mkdir -p "$PGBACK" 
 chmod 750 "$PGBACK"
 chown -R postgres  "$PGBACK"
-
+LOGDIR="$PGDATA/log"
 # TODO swap to -Eeuo pipefail above (after handling all potentially-unset variables)
 
 # usage: file_env VAR [DEFAULT]
@@ -193,7 +193,7 @@ if [ "$1" = 'postgres' ]; then
 	fi
 fi
 
-LOGDIR="$PGDATA/log"
+
 sed -ri 's/^#logging_collector\s+.*/logging_collector = on  /' $PGDATA/postgresql.conf 
 sed -ri "s/^#log_directory\s+.*/log_directory = '$LOGDIR'/" $PGDATA/postgresql.conf 
 sed -ri "s/^#log_filename\s+.*/log_filename = 'postgresql-%a.log'/" $PGDATA/postgresql.conf 
