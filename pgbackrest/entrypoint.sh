@@ -170,8 +170,9 @@ if [ "$1" = 'postgres' ]; then
 fi
 
 mkdir -p "$PGBACK" 
-chown -R postgres  "$PGBACK"
 chmod 750 "$PGBACK"
+chown -R postgres  "$PGBACK"
+
 
 echo "[demo]" >> /etc/pgbackrest/pgbackrest.conf  
 echo "pg1-path=$PGDATA" >> /etc/pgbackrest/pgbackrest.conf  
@@ -186,10 +187,5 @@ sed -ri "s/^#archive_command\s+.*/archive_command = 'pgbackrest --stanza=demo ar
 sed -ri "s/^#archive_mode\s+.*/archive_mode = on/" $PGDATA/postgresql.conf 
 sed -ri "s/^#log_line_prefix\s+.*/log_line_prefix = ''/" $PGDATA/postgresql.conf
 sed -ri "s/^#max_wal_senders\s+.*/max_wal_senders = 3/" $PGDATA/postgresql.conf  
-
-
-
-
-
 
 exec "$@"
