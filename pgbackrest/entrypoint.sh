@@ -4,9 +4,7 @@ set -Eeo pipefail
 mkdir -p "$PGBACK" 
 chmod 750 "$PGBACK"
 chown -R postgres  "$PGBACK"
-mkdir -p "$PGDATA/log"
-chmod 770 "$PGDATA/log"
-chown -R postgres  "$PGDATA/log"
+
 # TODO swap to -Eeuo pipefail above (after handling all potentially-unset variables)
 
 # usage: file_env VAR [DEFAULT]
@@ -193,7 +191,9 @@ if [ "$1" = 'postgres' ]; then
         sed -ri "s/^#log_truncate_on_rotation\s+.*/log_truncate_on_rotation = on/" $PGDATA/postgresql.conf
         sed -ri "s/^#log_rataion_age\s+.*/log_rataion_age = 1d/" $PGDATA/postgresql.conf
         sed -ri "s/^#log_ratation_size\s+.*/log_ratation_size = 0/" $PGDATA/postgresql.conf
-
+		mkdir -p "$PGDATA/log"
+		chmod 770 "$PGDATA/log"
+		chown -R postgres  "$PGDATA/log"
 	fi
 fi
 
