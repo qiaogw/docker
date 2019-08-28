@@ -189,16 +189,25 @@ if [ "$1" = 'postgres' ]; then
 		mkdir -p "$LOGDIR"
 		chmod 770 "$LOGDIR"
 		chown -R postgres  "$LOGDIR"
+		sed -ri 's/^#logging_collector\s+.*/logging_collector = on  /' $PGDATA/postgresql.conf 
+		sed -ri "s:^#log_directory\s+.*:log_directory = '$LOGDIR':" $PGDATA/postgresql.conf 
+		sed -ri "s/^#log_filename\s+.*/log_filename = 'postgresql-%a.log'/" $PGDATA/postgresql.conf 
+		sed -ri "s/^#log_truncate_on_rotation\s+.*/log_truncate_on_rotation = on/" $PGDATA/postgresql.conf
+		sed -ri "s/^#log_rataion_age\s+.*/log_rataion_age = 1d/" $PGDATA/postgresql.conf
+		sed -ri "s/^#log_ratation_size\s+.*/log_ratation_size = 0/" $PGDATA/postgresql.conf
+		PGUSER="${PGUSER:-$POSTGRES_USER}" \
+		pg_ctl -D "$PGDATA" \
+			-o "-c listen_addresses=''" \
+			-w start
+		PGUSER="${PGUSER:-$POSTGRES_USER}" \
+		pgbackrest --stanza=demo --log-level-console=info stanza-create
+		PGUSER="${PGUSER:-$POSTGRES_USER}" \
+		pg_ctl -D "$PGDATA" -m fast -w stop
 
 	fi
 fi
 
 
-sed -ri 's/^#logging_collector\s+.*/logging_collector = on  /' $PGDATA/postgresql.conf 
-sed -ri "s:^#log_directory\s+.*:log_directory = '$LOGDIR':" $PGDATA/postgresql.conf 
-sed -ri "s/^#log_filename\s+.*/log_filename = 'postgresql-%a.log'/" $PGDATA/postgresql.conf 
-sed -ri "s/^#log_truncate_on_rotation\s+.*/log_truncate_on_rotation = on/" $PGDATA/postgresql.conf
-sed -ri "s/^#log_rataion_age\s+.*/log_rataion_age = 1d/" $PGDATA/postgresql.conf
-sed -ri "s/^#log_ratation_size\s+.*/log_ratation_size = 0/" $PGDATA/postgresql.conf
+
 
 exec "$@"
