@@ -3,7 +3,7 @@
 source /docker-entrypoint.sh #引入postgres脚本
 
 mkdir -p "$PGBACK" 
-chown -R postgres  "$PGBACK"
+chown -R postgres:postgres  "$PGBACK"
 chmod 750 "$PGBACK"
 
 sed -ri 's/^#wal_level\s+.*/wal_level = replica/' $PGDATA/postgresql.conf 
