@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -Eeo pipefail
-
+ pid=0
 mkdir -p "$PGDATA" 
 chmod 700 "$PGDATA" 
 chown -R postgres "$PGDATA"
