@@ -1,8 +1,8 @@
 #!/bin/bash
 
 set -Eeo pipefail
- pid=0
- trap "echo stopping by SIGTERM" SIGTERM
+
+trap "echo stopping by SIGTERM" SIGTERM
 trap "echo stopping by SIGINT" SIGINT
 trap "echo stopping by SIGKILL" SIGKILL
 trap 'echo stopping by SIGUSR12' SIGUSR1
