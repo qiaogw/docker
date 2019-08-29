@@ -16,7 +16,7 @@ function trap_sigterm() {
         killall sshd
     fi
 }
-trap 'trap_sigterm' SIGINT SIGTERM
+trap 'trap_sigterm' SIGKILL SIGTERM SIGHUP SIGINT EXIT
 
 gosu postgres postgres
 
