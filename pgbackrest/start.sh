@@ -24,7 +24,7 @@ trap 'echo stopping by SIGUSR1' SIGUSR1
 trap "echo TRAPed signal" HUP INT QUIT TERM
 gosu postgres postgres
 
-
+trap "echo TRAPed signal" SIGKILL SIGTERM SIGHUP SIGINT EXIT
 
 # We will wait indefinitely until "docker stop [container_id]"
 # When that happens, we route to the "trap_sigterm" function above

@@ -1,11 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -Eeo pipefail
-
-trap "echo stopping by SIGTERM" SIGTERM
-trap "echo stopping by SIGINT" SIGINT
-trap "echo stopping by SIGKILL" SIGKILL
-trap 'echo stopping by SIGUSR12' SIGUSR1
 
 mkdir -p "$PGDATA" 
 chmod 700 "$PGDATA" 
