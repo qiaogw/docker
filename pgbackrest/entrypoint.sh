@@ -8,11 +8,8 @@ chown -R postgres "$PGDATA"
 mkdir -p "$PGBACK" 
 chmod 750 "$PGBACK"
 chown -R postgres  "$PGBACK"
-mkdir -p "$LOGDIR"  
-chmod 770 "$LOGDIR" 
-chown -R postgres  "$LOGDIR"
-ls -A "$PGDATA"
- echo "$PGDATA"
+
+
 if [ -z "$(ls -A "$PGDATA")" ]; then
     gosu postgres initdb
     sed -ri "s/^#(listen_addresses\s*=\s*)\S+/\1'*'/" "$PGDATA"/postgresql.conf
@@ -67,7 +64,9 @@ if [ -z "$(ls -A "$PGDATA")" ]; then
 
     gosu postgres pg_ctl -D "$PGDATA" -m fast -w stop
 
+
     { echo; echo "host all all 0.0.0.0/0 $authMethod"; } >> "$PGDATA"/pg_hba.conf
+
 
 	sed -ri 's/^#wal_level\s+.*/wal_level = replica/' $PGDATA/postgresql.conf 
 	sed -ri "s/^#archive_command\s+.*/archive_command = 'pgbackrest --stanza=demo archive-push %p'/" $PGDATA/postgresql.conf 
@@ -85,7 +84,9 @@ if [ -z "$(ls -A "$PGDATA")" ]; then
 	echo "[global:archive-push]" >> /etc/pgbackrest/pgbackrest.conf  
 	echo "compress-level=3" >> /etc/pgbackrest/pgbackrest.conf  
 
-
+	mkdir -p "$LOGDIR"  
+	chmod 770 "$LOGDIR" 
+	chown -R postgres  "$LOGDIR"
 
 	sed -ri 's/^#logging_collector\s+.*/logging_collector = on  /' $PGDATA/postgresql.conf 
 	sed -ri "s:^#log_directory\s+.*:log_directory = '$LOGDIR':" $PGDATA/postgresql.conf 
