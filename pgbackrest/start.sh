@@ -23,6 +23,7 @@ trap "echo 'stopping by SIGINT'" SIGINT
 trap "echo 'stopping by SIGKILL'" SIGKILL
 trap "echo 'stopping by SIGUSR1'" SIGUSR1
 trap "echo 'TRAPed signal'" HUP INT QUIT TERM EXIT
+crond
 gosu postgres postgres
 
 trap trap_sigterm SIGKILL SIGTERM SIGHUP SIGINT HUP INT QUIT TERM EXIT
