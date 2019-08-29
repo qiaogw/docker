@@ -109,7 +109,7 @@ if [ -z "$(ls -A "$PGDATA")" ]; then
 	echo
 	echo "添加自动计划任务，定时备份"
 	echo "30 03  *   *   0     gosu postgres pgbackrest --type=full --stanza=demo backup" >>  var/spool/cron/crontabs/root
-	echo "*  *  *   *   1-6   gosu postgres pgbackrest --type=diff --stanza=demo backup" >>  var/spool/cron/crontabs/root
+	echo "30 03  *   *   1-6   gosu postgres pgbackrest --type=diff --stanza=demo backup" >>  var/spool/cron/crontabs/root
 	echo
 	echo 'PostgreSQL init process complete; ready for start up.'
 fi

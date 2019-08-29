@@ -1,8 +1,26 @@
+
+1、使用 select current_timestamp 查看psql的系统时间戳
+2、完整恢复：
+        docker run --rm --name pg-restore -v \
+  /dockerdata/postgres/data:/var/lib/postgresql/data -v \
+  /dockerdata/postgres/backup:/var/lib/pgbackrest \
+  nexus.onstream-cloud.com/postgres:latest \
+   pgbackrest --stanza=demo --delta \
+   --log-level-console=info  restore
+        使用上命令恢复数据库
+3、时间点恢复：
+        docker run --rm --name pg-restore -v \
+  /dockerdata/postgres/data:/var/lib/postgresql/data -v \
+  /dockerdata/postgres/backup:/var/lib/pgbackrest \
+  nexus.onstream-cloud.com/postgres:latest \
+   pgbackrest info 
+   上面命令查看备份库，寻找恢复时间点前最近的备份记录，--target=恢复时间戳，--set=备份记录id，使用下面的命令恢复至时间点。
 docker run --rm --name pg-restore -v \
   /dockerdata/postgres/data:/var/lib/postgresql/data -v \
   /dockerdata/postgres/backup:/var/lib/pgbackrest \
   nexus.onstream-cloud.com/postgres:latest \
    pgbackrest --stanza=demo --delta \
    --log-level-console=info \
-  --type=time "--target=2019-08-05 18:11:08.130459+08" \
+  --type=time "--target=2019-08-29 19:01:03.403187+08" \
+  --set=20190829-184454F_20190829-190101D \
   --target-action=promote restore
