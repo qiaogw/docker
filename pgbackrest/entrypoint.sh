@@ -46,7 +46,7 @@ if [ -z "$(ls -A "$PGDATA")" ]; then
 
     userSql="$op USER $POSTGRES_USER WITH SUPERUSER $pass;"
     echo $userSql | gosu postgres postgres --single -jE
-    echo
+    echo "$userSql"
 
     # internal start of server in order to allow set-up using psql-client
     # does not listen on TCP/IP and waits until start finishes
