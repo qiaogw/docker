@@ -24,6 +24,6 @@ gosu postgres postgres
 
 # We will wait indefinitely until "docker stop [container_id]"
 # When that happens, we route to the "trap_sigterm" function above
-#wait $!
+wait $!
 
 echo "PostgreSQL is shutting down. Exiting.."
