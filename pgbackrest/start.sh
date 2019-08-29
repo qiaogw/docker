@@ -17,7 +17,7 @@ function trap_sigterm() {
         killall sshd
     fi
 }
-
+whoami
 trap 'trap_sigterm' SIGINT SIGTERM
 
 postgres

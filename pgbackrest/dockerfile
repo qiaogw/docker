@@ -4,39 +4,52 @@ FROM postgres:alpine
 ENV PACKAGE_URL https://github.com/ossc-db/pg_rman/archive/V${RMAN_VER}.tar.gz
 
 ENV LANG=zh_CN.UTF-8 \
-    LC_ALL=zh_CN.UTF-8 \
-    LANGUAGE=zh_CN:zh  \
-    TERM=xterm \
-    TZ=Asia/Shanghai
+   LC_ALL=zh_CN.UTF-8 \
+   LANGUAGE=zh_CN:zh  \
+   TERM=xterm \
+   TZ=Asia/Shanghai
+
+ENV LOGDIR="$PGDATA/log"
+
+ENV PGBACK=/var/lib/pgbackrest
 
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories && \
    mkdir /build
 
 RUN apk update && apk add --no-cache --virtual    \
-    build-dependencies build-base perl  perl-dev musl-dev make gcc \
-    libxml2-dev libxml2  libressl-dev 	openssl-dev && \
-    wget -q -O - \
-       https://github.com/pgbackrest/pgbackrest/archive/release/2.16.tar.gz | \
-       tar zx -C /build &&  \
-    cd /build/pgbackrest-release-2.16/src && ./configure &&  \
-    make -s -C /build/pgbackrest-release-2.16/src && \ 
-    cp /build/pgbackrest-release-2.16/src/pgbackrest /usr/bin && \
-    chmod 755 /usr/bin/pgbackrest && \
-    cd / && \
-    rm -rf /build 
+   build-dependencies build-base perl  perl-dev musl-dev make gcc \
+   libxml2-dev libxml2  libressl-dev 	openssl-dev && \
+   wget -q -O - \
+   https://github.com/pgbackrest/pgbackrest/archive/release/2.16.tar.gz | \
+   tar zx -C /build &&  \
+   cd /build/pgbackrest-release-2.16/src && ./configure &&  \
+   make -s -C /build/pgbackrest-release-2.16/src && \ 
+   cp /build/pgbackrest-release-2.16/src/pgbackrest /usr/bin && \
+   chmod 755 /usr/bin/pgbackrest && \
+   cd / && \
+   rm -rf /build 
 
 RUN  wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/1.9/gosu-amd64" && \
    chmod +x /usr/local/bin/gosu 
 
-RUN mkdir -p -m 770 /var/log/pgbackrest && \
-    chown postgres:postgres /var/log/pgbackrest && \
-    mkdir -p /etc/pgbackrest && \
-    mkdir -p /etc/pgbackrest/conf.d && \
-    touch /etc/pgbackrest/pgbackrest.conf && \
-    chmod 640 /etc/pgbackrest/pgbackrest.conf && \
-    chown postgres:postgres /etc/pgbackrest/pgbackrest.conf 
+RUN mkdir -p "$PGDATA" && \
+   chmod 700 "$PGDATA" && \
+   mkdir -p /var/run/postgresql && \
+   chown -R postgres /var/run/postgresql && \
+   chmod 775 /var/run/postgresql && \
+   mkdir -p "$PGBACK" && \
+   chmod 750 "$PGBACK" && \
+   mkdir -p "$LOGDIR"  && \
+   chmod 770 "$LOGDIR" 
 
-ENV PGBACK=/var/lib/pgbackrest
+
+RUN mkdir -p -m 770 /var/log/pgbackrest && \
+   chown postgres:postgres /var/log/pgbackrest && \
+   mkdir -p /etc/pgbackrest && \
+   mkdir -p /etc/pgbackrest/conf.d && \
+   touch /etc/pgbackrest/pgbackrest.conf && \
+   chmod 640 /etc/pgbackrest/pgbackrest.conf && \
+   chown postgres:postgres /etc/pgbackrest/pgbackrest.conf 
 
 
 COPY entrypoint.sh /
