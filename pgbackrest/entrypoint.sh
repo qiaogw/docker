@@ -9,6 +9,17 @@ mkdir -p "$PGBACK"
 chmod 750 "$PGBACK"
 chown -R postgres  "$PGBACK"
 
+#pgbackrest配置数据库备份
+cat /dev/null >  /etc/pgbackrest/pgbackrest.conf 
+
+echo "[demo]" >> /etc/pgbackrest/pgbackrest.conf  
+echo "pg1-path=$PGDATA" >> /etc/pgbackrest/pgbackrest.conf  
+echo "[global]" >> /etc/pgbackrest/pgbackrest.conf  
+echo " repo1-path=$PGBACK" >> /etc/pgbackrest/pgbackrest.conf
+echo " repo1-retention-full=2" >> /etc/pgbackrest/pgbackrest.conf  
+echo "[global:archive-push]" >> /etc/pgbackrest/pgbackrest.conf  
+echo "compress-level=3" >> /etc/pgbackrest/pgbackrest.conf  
+
 if [ -z "$(ls -A "$PGDATA")" ]; then
 	gosu postgres initdb
 	sed -ri "s/^#(listen_addresses\s*=\s*)\S+/\1'*'/" "$PGDATA"/postgresql.conf
@@ -66,23 +77,14 @@ if [ -z "$(ls -A "$PGDATA")" ]; then
 
 	{ echo; echo "host all all 0.0.0.0/0 $authMethod"; } >> "$PGDATA"/pg_hba.conf
 
-	#pgbackrest配置数据库备份
+	#配置数据库备份
 	sed -ri 's/^#wal_level\s+.*/wal_level = replica/' $PGDATA/postgresql.conf 
 	sed -ri "s/^#archive_command\s+.*/archive_command = 'pgbackrest --stanza=demo archive-push %p'/" $PGDATA/postgresql.conf 
 	sed -ri "s/^#archive_mode\s+.*/archive_mode = on/" $PGDATA/postgresql.conf 
 	sed -ri "s/^#log_line_prefix\s+.*/log_line_prefix = ''/" $PGDATA/postgresql.conf
 	sed -ri "s/^#max_wal_senders\s+.*/max_wal_senders = 3/" $PGDATA/postgresql.conf  
 
-	cat /dev/null >  /etc/pgbackrest/pgbackrest.conf  
-
-	echo "[demo]" >> /etc/pgbackrest/pgbackrest.conf  
-	echo "pg1-path=$PGDATA" >> /etc/pgbackrest/pgbackrest.conf  
-	echo "[global]" >> /etc/pgbackrest/pgbackrest.conf  
-	echo " repo1-path=$PGBACK" >> /etc/pgbackrest/pgbackrest.conf
-	echo " repo1-retention-full=2" >> /etc/pgbackrest/pgbackrest.conf  
-	echo "[global:archive-push]" >> /etc/pgbackrest/pgbackrest.conf  
-	echo "compress-level=3" >> /etc/pgbackrest/pgbackrest.conf  
-
+	#配置数据库日志
 	mkdir -p "$LOGDIR"  
 	chmod 770 "$LOGDIR" 
 	chown -R postgres  "$LOGDIR"
@@ -95,20 +97,22 @@ if [ -z "$(ls -A "$PGDATA")" ]; then
 	sed -ri "s/^#log_ratation_size\s+.*/log_ratation_size = 0/" $PGDATA/postgresql.conf
 	gosu postgres pg_ctl -D "$PGDATA" \
 		-o "-c listen_addresses=''" -w start
+	#pgbackrest初始化
 	gosu postgres \
 	pgbackrest --stanza=demo --log-level-console=info stanza-create
 	gosu postgres pgbackrest --type=full --stanza=demo backup
 	echo
-	echo 'pgbackrest 数据库备份配置完成.'
+	echo 'pgbackrest 初始化完成.'
 	echo
 	gosu postgres \
 	pg_ctl -D "$PGDATA" -m fast -w stop
 	echo
-	echo 'PostgreSQL init process complete; ready for start up.'
 	echo "添加自动计划任务，定时备份"
 	echo "30 03  *   *   0     gosu postgres pgbackrest --type=full --stanza=demo backup" >>  var/spool/cron/crontabs/root
 	echo "*  *  *   *   1-6   gosu postgres pgbackrest --type=diff --stanza=demo backup" >>  var/spool/cron/crontabs/root
 	crond
+	echo
+	echo 'PostgreSQL init process complete; ready for start up.'
 fi
 
 exec   "$@"
