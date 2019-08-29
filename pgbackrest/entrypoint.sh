@@ -167,9 +167,7 @@ if [ "$1" = 'postgres' ]; then
 
 		unset PGPASSWORD
 
-		echo
-		echo 'PostgreSQL init process complete; ready for start up.'
-		echo
+
 		sed -ri 's/^#wal_level\s+.*/wal_level = replica/' $PGDATA/postgresql.conf 
         sed -ri "s/^#archive_command\s+.*/archive_command = 'pgbackrest --stanza=demo archive-push %p'/" $PGDATA/postgresql.conf 
         sed -ri "s/^#archive_mode\s+.*/archive_mode = on/" $PGDATA/postgresql.conf 
@@ -185,9 +183,7 @@ if [ "$1" = 'postgres' ]; then
 		echo " repo1-retention-full=2" >> /etc/pgbackrest/pgbackrest.conf  
 		echo "[global:archive-push]" >> /etc/pgbackrest/pgbackrest.conf  
 		echo "compress-level=3" >> /etc/pgbackrest/pgbackrest.conf  
-		echo
-		echo 'pgbackrest init process complete; ready for start up.'
-		echo
+
 
 		mkdir -p "$LOGDIR"
 		chmod 770 "$LOGDIR"
@@ -198,21 +194,23 @@ if [ "$1" = 'postgres' ]; then
 		sed -ri "s/^#log_truncate_on_rotation\s+.*/log_truncate_on_rotation = on/" $PGDATA/postgresql.conf
 		sed -ri "s/^#log_rataion_age\s+.*/log_rataion_age = 1d/" $PGDATA/postgresql.conf
 		sed -ri "s/^#log_ratation_size\s+.*/log_ratation_size = 0/" $PGDATA/postgresql.conf
-		echo
-		echo 'pgbackrest init process complete; ready for start up.'
-		echo
 		PGUSER="${PGUSER:-$POSTGRES_USER}" \
 		pg_ctl -D "$PGDATA" \
 			-o "-c listen_addresses=''" \
 			-w start
 		PGUSER="${PGUSER:-$POSTGRES_USER}" \
 		pgbackrest --stanza=demo --log-level-console=info stanza-create
+		echo
+		echo 'pgbackrest init process complete; ready for start up.'
+		echo
 		PGUSER="${PGUSER:-$POSTGRES_USER}" \
 		pg_ctl -D "$PGDATA" -m fast -w stop
+		echo
+		echo 'PostgreSQL init process complete; ready for start up.'
+		echo
 
 	fi
 fi
-
 
 
 
