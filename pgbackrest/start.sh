@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 function trap_sigterm() {
     echo "Signal trap triggered, beginning shutdown.." >> $PGDATA/trap.output
     echo "Signal trap triggered, beginning shutdown.."
