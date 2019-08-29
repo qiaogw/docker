@@ -21,7 +21,7 @@ trap "echo stopping by SIGTERM" SIGTERM
 trap "echo stopping by SIGINT" SIGINT
 trap "echo stopping by SIGKILL" SIGKILL
 trap 'echo stopping by SIGUSR1' SIGUSR1
-trap "echo TRAPed signal" HUP INT QUIT TERM
+trap "echo TRAPed signal" HUP INT QUIT TERM EXIT
 gosu postgres postgres
 
 trap "echo TRAPed signal" SIGKILL SIGTERM SIGHUP SIGINT EXIT
