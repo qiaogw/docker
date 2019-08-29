@@ -20,7 +20,7 @@ function trap_sigterm() {
 whoami
 trap 'trap_sigterm' SIGINT SIGTERM
 
-postgres
+gosu postgres postgres
 
 
 
