@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 set -Eeo pipefail
-
+echo "==============================="
 mkdir -p "$PGDATA" 
 chmod 700 "$PGDATA" 
 chown -R postgres "$PGDATA"
 mkdir -p "$PGBACK" 
 chmod 750 "$PGBACK"
 chown -R postgres  "$PGBACK"
-
+echo "==============================="
 #pgbackrest配置数据库备份
 cat /dev/null >  /etc/pgbackrest/pgbackrest.conf 
 
