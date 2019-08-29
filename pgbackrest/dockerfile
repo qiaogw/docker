@@ -47,7 +47,6 @@ RUN mkdir -p -m 770 /var/log/pgbackrest && \
 
 
 COPY entrypoint.sh /
-COPY start.sh /
 
 STOPSIGNAL SIGTERM
 
@@ -55,4 +54,4 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 5432
 
-CMD ["/start.sh"]
+CMD ["postgres"]
