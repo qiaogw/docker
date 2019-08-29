@@ -1,8 +1,15 @@
 #!/usr/bin/env bash
+
 set -Eeo pipefail
 
+mkdir -p "$PGDATA" 
+chmod 700 "$PGDATA" 
 chown -R postgres "$PGDATA"
+mkdir -p "$PGBACK" 
+chmod 750 "$PGBACK"
 chown -R postgres  "$PGBACK"
+mkdir -p "$LOGDIR"  
+chmod 770 "$LOGDIR" 
 chown -R postgres  "$LOGDIR"
 
 if [ -z "$(ls -A "$PGDATA")" ]; then

@@ -32,15 +32,9 @@ RUN apk update && apk add --no-cache --virtual    \
 RUN  wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/1.9/gosu-amd64" && \
    chmod +x /usr/local/bin/gosu 
 
-RUN mkdir -p "$PGDATA" && \
-   chmod 700 "$PGDATA" && \
-   mkdir -p /var/run/postgresql && \
+RUN mkdir -p /var/run/postgresql && \
    chown -R postgres /var/run/postgresql && \
-   chmod 775 /var/run/postgresql && \
-   mkdir -p "$PGBACK" && \
-   chmod 750 "$PGBACK" && \
-   mkdir -p "$LOGDIR"  && \
-   chmod 770 "$LOGDIR" 
+   chmod 775 /var/run/postgresql 
 
 
 RUN mkdir -p -m 770 /var/log/pgbackrest && \
