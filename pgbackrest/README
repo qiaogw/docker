@@ -3,5 +3,6 @@ docker run --rm --name pg-restore -v \
   /dockerdata/postgres/backup:/var/lib/pgbackrest \
   nexus.onstream-cloud.com/postgres:latest \
    pgbackrest --stanza=demo --delta \
+   --log-level-console=info \
   --type=time "--target=2019-08-05 18:11:08.130459+08" \
   --target-action=promote restore
