@@ -6,7 +6,7 @@ function trap_sigterm() {
 
     # Clean shutdowns begin here (force fast mode in case of PostgreSQL < 9.5)
     echo_info "Cleanly shutting down PostgreSQL in force fast mode.."
-    pg_ctl -w -D $PGDATA -m fast stop
+    gosu postgres pg_ctl -w -D $PGDATA -m fast stop
 
     # Unclean shutdowns begin here (if all else fails)
     if [ -f $PGDATA/postmaster.pid ]; then
