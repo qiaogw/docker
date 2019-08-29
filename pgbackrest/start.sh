@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -Eeo pipefail
 function trap_sigterm() {
     echo_warn "Signal trap triggered, beginning shutdown.." >> $PGDATA/trap.output
     echo_warn "Signal trap triggered, beginning shutdown.."
