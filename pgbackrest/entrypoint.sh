@@ -116,4 +116,4 @@ if [ -z "$(ls -A "$PGDATA")" ]; then
 fi
 
 
-exec  gosu postgres "$@"
+exec   "$@"
