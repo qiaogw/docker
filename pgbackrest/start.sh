@@ -19,7 +19,7 @@ function trap_sigterm() {
 }
 
 trap 'trap_sigterm' SIGINT SIGTERM
-
+whoami
 postgres
 
 
