@@ -11,7 +11,8 @@ chown -R postgres  "$PGBACK"
 mkdir -p "$LOGDIR"  
 chmod 770 "$LOGDIR" 
 chown -R postgres  "$LOGDIR"
-
+ls -A "$PGDATA"
+ echo "$PGDATA"
 if [ -z "$(ls -A "$PGDATA")" ]; then
     gosu postgres initdb
     sed -ri "s/^#(listen_addresses\s*=\s*)\S+/\1'*'/" "$PGDATA"/postgresql.conf
