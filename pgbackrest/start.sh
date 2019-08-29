@@ -20,6 +20,7 @@ function trap_sigterm() {
 trap "echo stopping by SIGTERM" SIGTERM
 trap "echo stopping by SIGINT" SIGINT
 trap "echo stopping by SIGKILL" SIGKILL
+trap 'echo stopping by SIGUSR1' SIGUSR1
 gosu postgres postgres
 
 

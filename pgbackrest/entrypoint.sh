@@ -2,6 +2,11 @@
 
 set -Eeo pipefail
  pid=0
+ trap "echo stopping by SIGTERM" SIGTERM
+trap "echo stopping by SIGINT" SIGINT
+trap "echo stopping by SIGKILL" SIGKILL
+trap 'echo stopping by SIGUSR12' SIGUSR1
+
 mkdir -p "$PGDATA" 
 chmod 700 "$PGDATA" 
 chown -R postgres "$PGDATA"
@@ -135,8 +140,5 @@ function trap_sigterm() {
     fi
 }
 #trap 'trap_sigterm' SIGKILL SIGTERM SIGHUP SIGINT EXIT
-trap "echo stopping by SIGTERM" SIGTERM
-trap "echo stopping by SIGINT" SIGINT
-trap "echo stopping by SIGKILL" SIGKILL
 
 exec   "$@"
