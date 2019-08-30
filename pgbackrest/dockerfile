@@ -17,17 +17,31 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositorie
    mkdir /build
 
 RUN apk update && apk add --no-cache --virtual    \
-   build-dependencies build-base perl  perl-dev musl-dev make gcc \
-   libxml2-dev libxml2  libressl-dev 	openssl-dev && \
-   wget -q -O - \
+   build-dependencies \
+   build-base \
+   musl-dev \
+   make \
+   gcc \
+   libxml2-dev \
+   libxml2  \
+   libressl-dev 	\
+   openssl-dev  
+
+RUN  apk add --no-cache  perl  \
+   perl-dev 
+
+RUN   wget -q -O - \
    https://github.com/pgbackrest/pgbackrest/archive/release/2.16.tar.gz | \
    tar zx -C /build &&  \
    cd /build/pgbackrest-release-2.16/src && ./configure &&  \
    make -s -C /build/pgbackrest-release-2.16/src && \ 
    cp /build/pgbackrest-release-2.16/src/pgbackrest /usr/bin && \
-   chmod 755 /usr/bin/pgbackrest && \
-   cd / && \
-   rm -rf /build 
+   chmod 755 /usr/bin/pgbackrest 
+
+WORKDIR /
+
+RUN     rm -rf /build  && \
+   apk del build-dependencies           
 
 RUN  wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/1.9/gosu-amd64" && \
    chmod +x /usr/local/bin/gosu 
