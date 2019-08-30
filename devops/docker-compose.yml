@@ -1,7 +1,7 @@
 version: '3'
 services:
   gitlab:
-    image:  'caeret/gitlab-ce-zh:12.1.0'
+    image:  nexus.onstream-cloud.com/gitlab-ce-zh:12.1.0
     environment:
       TZ: 'Asia/Shanghai'
       GITLAB_OMNIBUS_CONFIG: |
@@ -42,7 +42,7 @@ services:
     networks:
       - devops-net
   gitlab-ci:
-    image: gitlab/gitlab-runner
+    image: nexus.onstream-cloud.com/gitlab-runner
     volumes:
       - devops_data/gitlab-runner/config:/etc/gitlab-runner:Z #:Z 解决与 SELinux 相关的权限问题
       - /var/run/docker.sock:/var/run/docker.sock
