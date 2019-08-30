@@ -36,54 +36,55 @@ services:
       - '10022:22'
     volumes:
       - /etc/localtime:/etc/localtime:ro #主机时区
-      - /dockerdata/gitlab/config:/etc/gitlab:Z #:Z 解决与 SELinux 相关的权限问题
-      - /dockerdata/gitlab/data:/var/opt/gitlab:Z #:Z 解决与 SELinux 相关的权限问题
-      - /dockerdata/gitlab/logs:/var/log/gitlab:Z #:Z 解决与 SELinux 相关的权限问题
+      - devops_data/gitlab/config:/etc/gitlab:Z #:Z 解决与 SELinux 相关的权限问题
+      - devops_data/gitlab/data:/var/opt/gitlab:Z #:Z 解决与 SELinux 相关的权限问题
+      - devops_data/gitlab/logs:/var/log/gitlab:Z #:Z 解决与 SELinux 相关的权限问题
     networks:
       - devops-net
   gitlab-ci:
     image: gitlab/gitlab-runner
     volumes:
-      - /dockerdata/gitlab-runner/config:/etc/gitlab-runner:Z #:Z 解决与 SELinux 相关的权限问题
+      - devops_data/gitlab-runner/config:/etc/gitlab-runner:Z #:Z 解决与 SELinux 相关的权限问题
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/localtime:/etc/localtime:ro #主机时区
     networks:
       - devops-net
-  nexus:
-    image: sonatype/nexus3
-    ports:
-      - 8081:8081
-      - 8082:8082
-      - 8083:8083
-    volumes:
-      - /dockerdata/nexus-data:/nexus-data:Z #:Z 解决与 SELinux 相关的权限问题
-      - /etc/localtime:/etc/localtime:ro #主机时区
-    networks:
-      - devops-net   
-  jira:
-    image: nexus.onstream-cloud.com/jirasoft:1.0
-    ports:
-      - 5004:8080
-    volumes:
-      - /etc/localtime:/etc/localtime:ro #主机时区
-    networks:
-      - devops-net    
-  confluence:
-    image: nexus.onstream-cloud.com/confluence:1.0
-    ports:
-      - 5002:8090
-      - 5003:8091
-    volumes:
-      - /etc/localtime:/etc/localtime:ro #主机时区
-    networks:
-      - devops-net      
+  # nexus:
+  #   image: sonatype/nexus3
+  #   ports:
+  #     - 8081:8081
+  #     - 8082:8082
+  #     - 8083:8083
+  #   volumes:
+  #     - devops_data/nexus-data:/nexus-data:Z #:Z 解决与 SELinux 相关的权限问题
+  #     - /etc/localtime:/etc/localtime:ro #主机时区
+  #   networks:
+  #     - devops-net   
+  # jira:
+  #   image: nexus.onstream-cloud.com/jirasoft:1.0
+  #   ports:
+  #     - 5004:8080
+  #   volumes:
+  #     - /etc/localtime:/etc/localtime:ro #主机时区
+  #   networks:
+  #     - devops-net    
+  # confluence:
+  #   image: nexus.onstream-cloud.com/confluence:1.0
+  #   ports:
+  #     - 5002:8090
+  #     - 5003:8091
+  #   volumes:
+  #     - /etc/localtime:/etc/localtime:ro #主机时区
+  #   networks:
+  #     - devops-net      
   db:
-    image: postgres:alpine   #postgres 镜像
+    image: nexus.onstream-cloud.com/postgres    #postgres 镜像
     ports:
       - 5432:5432  #映射端口号
     volumes:
       - /etc/localtime:/etc/localtime:ro #主机时区
-      - /dockerdata/sonar/postgres:/var/lib/postgresql/data #将数据映射到对应的路径
+      - devops_data/sonar/postgres:/var/lib/postgresql/data #将数据映射到对应的路径
+      - devops_data/postgres/backup:/var/lib/pgbackrest 
     environment:
       - POSTGRES_USER=sonar 
       - POSTGRES_PASSWORD=sonar  #密码
@@ -96,10 +97,16 @@ services:
       - 6379:6379  #映射端口号
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /dockerdata/redis:/data:Z #将数据映射到对应的路径
-      - /dockerdata/redis/conf/redis.conf:/usr/local/etc/redis/redis.conf:Z #将配置文件映射到对应的路径
+      - devops_data/redis:/data:Z #将数据映射到对应的路径
+      - devops_data/redis/conf/redis.conf:/usr/local/etc/redis/redis.conf:Z #将配置文件映射到对应的路径
     networks:
       - devops-net 
 networks:
   devops-net:
     driver: bridge
+volumes:
+  devops_data:
+    driver_opts:
+      type: none
+      device: /dockerdata/devops
+      o: bind
